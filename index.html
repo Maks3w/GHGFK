@@ -168,8 +168,8 @@
             var branchName = 'pr_' + prNumber;
             _createBranch(repoFullName, branchName, 'master', function (reference) {
                 _mergeBranch(pr, pr.merge_commit_sha, branchName, "Merge PR(#" + prNumber + ")", function () {
-                    _mergeBranch(pr, branchName, 'master', "Merge PR(#" + prNumber + ") / master", function () {
-                        _mergeBranch(pr, branchName, 'develop', "Merge PR(#" + prNumber + ") / develop", function () {
+                    _mergeBranch(pr, branchName, 'develop', "Merge PR(#" + prNumber + ") / develop", function () {
+                        _mergeBranch(pr, branchName, 'master', "Merge PR(#" + prNumber + ") / master", function () {
                             _deleteBranch(repoFullName, branchName, function () {
                                 alert('merged');
                             });

@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en" ng-app="GHGFK">
+<head>
+    <meta charset="utf-8">
+    <title>Merge GitHub's PRs with Git Flow style</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css"/>
+    <link rel="stylesheet" href="css/app.css"/>
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="brand" href="#">GHGFK</a>
+
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li><a href="#/selectRepo">Select repository</a></li>
+                </ul>
+            </div>
+            <div ng-show="user" class="brand" style="float:right">Welcome {{ user }}</div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <h2>DON'T USE THIS IN PRODUCTION</h2>
+
+    GitHub token is saved in the browser's localStorage
+    <div ng-controller="Alert">
+        <div class="alert alert-{{ alert.type }}" ng-repeat="alert in alerts">
+            <button type="button" class="close" ng-click="close($index)">&times;</button>
+            {{alert.msg}}
+        </div>
+    </div>
+    <div ng-view></div>
+</div>
+<script type="text/ng-template" id="partials/login.html">
+    <form ng-submit="login()" class="form-horizontal form-signin">
+        <h2 class="form-signin-heading">Please provide a GitHub token</h2>
+
+        <div class="control-group">
+            <label class="control-label" for="githubToken">Token</label>
+
+            <div class="controls">
+                <input type="text" ng-model="github_token" id="githubToken" required/>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn">Sign in</button>
+            </div>
+        </div>
+    </form>
+</script>
+<script type="text/ng-template" id="partials/selectRepository.html">
+    <form ng-submit="showPRs()">
+        <label>Organization
+            <select ng-model="organization" ng-options="o.login for o in organizations" ng-change="fillRepositories()"
+                    required ng-disabled="!organizations">
+                <option value="">Select a organization</option>
+            </select>
+        </label>
+        <label>Repository
+            <select ng-model="repository" ng-options="r.full_name for r in repositories" ng-change="showPRs()"
+                    required ng-disabled="!repositories">
+                <option value="">You must select a organization first</option>
+            </select>
+        </label>
+        <button>Select</button>
+    </form>
+</script>
+<script type="text/ng-template" id="partials/prList.html">
+    <div class="pager">
+        <ul>
+            <li ng-hide="currentPage == 1" class="previous">
+                <a ng-href="#/repo/{{ repo }}/page/{{ currentPage - 1 }}/per_page/{{ per_page }}">« Previous</a>
+            </li>
+            <li ng-hide="prs.length != per_page" class="next">
+                <a ng-href="#/repo/{{ repo }}/page/{{ currentPage*1 + 1 }}/per_page/{{ per_page }}">Next »</a>
+            </li>
+        </ul>
+    </div>
+    <ul id="pull-request" style="width: 680px">
+        <li class="list-group-item js-list-browser-item clearfix js-navigation-item unread navigation-focus"
+            ng-repeat="pr in prs">
+            <span class="list-group-item-number">#{{pr.number}}</span>
+            <h4 class="list-group-item-name">
+                <span class="type-icon octicon octicon-git-pull-request open" title="Open pull request"></span>
+                <a href="{{pr.html_url}}" class="js-navigation-open">{{pr.title}}</a>
+            </h4>
+
+            <div class="list-group-item-summary"><a href="{{pr.html_url}}"><p>{{pr.body}}</p></a></div>
+
+            <ul class="list-group-item-meta">
+                <li>
+                    <a href="{{pr.user.html_url}}" class="gravatar"><img height="16" ng-src="{{pr.user.avatar_url}}"
+                                                                         width="16"></a>
+                    by <a href="{{pr.user.html_url}}">{{pr.user.login}}</a>
+                </li>
+            </ul>
+
+            <merge-button pr="pr"/>
+        </li>
+    </ul>
+    <div class="pager">
+        <ul>
+            <li ng-hide="currentPage == 1" class="previous">
+                <a ng-href="#/repo/{{ repo }}/page/{{ currentPage - 1 }}/per_page/{{ per_page }}">« Previous</a>
+            </li>
+            <li ng-hide="prs.length != per_page" class="next">
+                <a ng-href="#/repo/{{ repo }}/page/{{ currentPage*1 + 1 }}/per_page/{{ per_page }}">Next »</a>
+            </li>
+        </ul>
+    </div>
+</script>
+<script type="text/ng-template" id="mergeButton.html">
+    <form ng-submit="showPRs()">
+        <label>Patch type
+            <select required>
+                <option value="">Select the patch type</option>
+                <option value="hotfix">Hotfix</option>
+                <option value="feature">Feature</option>
+            </select>
+        </label>
+        <input type="button" class="btn btn-danger" value="Merge" ng-model="pr"/>
+    </form>
+</script>
+
+<!-- In production use:
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+-->
+<script src="lib/angular/angular.js"></script>
+<script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.4.0.js"></script>
+<script src="lib/restangular.js"></script>
+<script src="lib/lodash.js"></script>
+<script src="lib/github/github.js"></script>
+<script src="js/app.js"></script>
+<script src="js/controllers.js"></script>
+</body>
+</html>

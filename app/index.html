@@ -122,18 +122,6 @@
         </ul>
     </div>
 </script>
-<script type="text/ng-template" id="mergeButton.html">
-    <form ng-submit="showPRs()">
-        <label>Patch type
-            <select required>
-                <option value="">Select the patch type</option>
-                <option value="hotfix">Hotfix</option>
-                <option value="feature">Feature</option>
-            </select>
-        </label>
-        <input type="button" class="btn btn-danger" value="Merge" ng-model="pr"/>
-    </form>
-</script>
 
 <!-- In production use:
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
@@ -143,6 +131,7 @@
 <script src="lib/restangular.js"></script>
 <script src="lib/lodash.js"></script>
 <script src="lib/github/github.js"></script>
+<script src="lib/github/github-directives.js"></script>
 <script src="js/app.js"></script>
 <script src="js/controllers.js"></script>
 </body>

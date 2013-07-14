@@ -16,7 +16,7 @@ module.exports = function (config) {
 
         autoWatch: true,
 
-        browsers: ['Chrome'],
+        browsers: ['Chrome', 'Firefox'],
 
         junitReporter: {
             outputFile: 'test_out/unit.xml',

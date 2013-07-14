@@ -284,7 +284,8 @@ describe('maks3w.github.directives', function () {
           }
         };
         var element = $compile('<merge-button pr="pr"/>')($rootScope);
-        expect(element.html()).toEqual('<label>Patch type<select ng-model="patchType" required="" class="ng-pristine ng-valid"><option value="">Select patch type</option><option value="hotfix">Hotfix</option><option value="feature">Feature</option></select></label><label>Commit msg <input type="text" ng-model="commitMsg" ng-bind="Merge PR #{{pr.number}}" required="" class="ng-pristine ng-valid ng-binding"></label><div class="control-group"><!-- ngRepeat: (branch, merge) in branches --></div><input type="submit" class="btn btn-danger" value="Merge" ng-disabled="mergeFrm.$invalid">');
+          $rootScope.$digest();
+        expect(element.html()).toEqual('<label>Patch type<select class="ng-pristine ng-valid ng-valid-required" ng-model="patchType" required=""><option value="">Select patch type</option><option value="hotfix">Hotfix</option><option value="feature">Feature</option></select></label><label>Commit msg <input class="ng-pristine ng-binding ng-valid ng-valid-required" ng-model="commitMsg" ng-bind="Merge PR #959" required="" type="text"></label><div class="control-group"><!-- ngRepeat: (branch, merge) in branches --><label ng-repeat="(branch, merge) in branches" class="checkbox inline ng-scope ng-binding"><input checked="checked" class="ng-pristine ng-valid" value="develop" ng-model="branches[branch]" ng-checked="merge" type="checkbox">  develop</label><label ng-repeat="(branch, merge) in branches" class="checkbox inline ng-scope ng-binding"><input checked="checked" class="ng-pristine ng-valid" value="master" ng-model="branches[branch]" ng-checked="merge" type="checkbox">  master</label></div><input class="btn btn-danger" value="Merge" ng-disabled="mergeFrm.$invalid" type="submit">');
       });
     });
   });

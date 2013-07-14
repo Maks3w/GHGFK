@@ -34,7 +34,7 @@ angular.module('maks3w.github.directives', ['maks3w.github'])
           var repository = repoFactory(pr.base.repo.full_name);
           repository.getPr(pr.number).then(function (pr) {
             if (!isMergeable(pr)) {
-              $rootScope.$broadcast('alert.new', 'err', '#' + pr.number + ' cannot be merged');
+              $rootScope.$broadcast('alert.new', 'error', '#' + pr.number + ' cannot be merged');
               return;
             }
 
@@ -45,7 +45,7 @@ angular.module('maks3w.github.directives', ['maks3w.github'])
                   "assignee": user.login
                 });
               } else if (pr.assignee.login != user.login) {
-                $rootScope.$broadcast('alert.new', 'err', '#' + pr.number + ' cannot be merge while still assigned to ' + pr.assignee.login);
+                $rootScope.$broadcast('alert.new', 'error', '#' + pr.number + ' cannot be merge while still assigned to ' + pr.assignee.login);
                 return;
               }
 

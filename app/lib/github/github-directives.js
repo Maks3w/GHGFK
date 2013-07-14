@@ -60,7 +60,7 @@ angular.module('maks3w.github.directives', ['maks3w.github'])
 
               if (selectedBranches.length === 1) {
                 if (prOriginalDstBranch == 'develop' && prOriginalDstBranch != selectedBranches[0]) {
-                  $rootScope.$broadcast('alert.new', 'err', '#' + pr.number + ' cannot be merged against master becaus it is bassed on develop');
+                  $rootScope.$broadcast('alert.new', 'err', '#' + pr.number + ' cannot be merged against master because it is based on develop');
                   return; // Prevent merge develop PR against master with all develop history
                 }
                 _simpleMerge(pr, commitMsg, selectedBranches[0]);

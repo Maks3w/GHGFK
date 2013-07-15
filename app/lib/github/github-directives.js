@@ -87,7 +87,7 @@ angular.module('maks3w.github.directives', ['maks3w.github'])
         function gitFlowMerge(pr, branchName, commitMsg, master, develop) {
           console.log('Merging ' + branchName + ' in ' + [master, develop] + ' with commit ' + commitMsg);
           var repository = repoFactory(pr.base.repo.full_name);
-          var b = repository.createBranch(branchName, master).then(function () {
+          repository.createBranch(branchName, master).then(function () {
             console.log('Merging #' + pr.number + ' in ' + branchName);
             repository.mergeBranch(pr.originalElement.head.sha, branchName, commitMsg).then(function () {
               repository.mergeBranch(branchName, develop, commitMsg + ' in ' + develop).then(function () {

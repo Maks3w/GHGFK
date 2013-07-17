@@ -10,7 +10,8 @@ angular.module('maks3w.github.directives', ['maks3w.github'])
         pr: '=',
         patchType: '&',
         commitMsg: '&',
-        selectedBranches: '&'
+        selectedBranches: '&',
+        localPrBranch: '&'
       },
       controller: ['$scope', 'github.repository', '$rootScope', '$github', function ($scope, repoFactory, $rootScope, $github) {
         var pr = $scope.pr;
@@ -29,6 +30,20 @@ angular.module('maks3w.github.directives', ['maks3w.github'])
           $scope.patchType = 'feature';
         }
 
+        $scope.$watch('patchType', function () {
+          $scope.localPrBranch = $scope.patchType + '/' + pr.number;
+        });
+
+        $scope.filterSelectedBranches = function () {
+          var keys = [];
+          for (var k in $scope.branches) {
+            if ($scope.branches.hasOwnProperty(k) && $scope.branches[k]) {
+              keys.push(k);
+            }
+          }
+          $scope.selectedBranches = keys;
+        };
+        $scope.filterSelectedBranches();
 
         $scope.merge = function () {
           var repository = repoFactory(pr.base.repo.full_name);
@@ -49,14 +64,8 @@ angular.module('maks3w.github.directives', ['maks3w.github'])
                 return;
               }
 
-              var selectedBranches = [];
-              var branches = $scope.branches;
               var commitMsg = $scope.commitMsg;
-              for (var branch in branches) {
-                if (branches.hasOwnProperty(branch) && branches[branch]) {
-                  selectedBranches.push(branch);
-                }
-              }
+              var selectedBranches = $scope.selectedBranches;
 
               if (selectedBranches.length === 1) {
                 if (prOriginalDstBranch == 'develop' && prOriginalDstBranch != selectedBranches[0]) {
@@ -117,7 +126,7 @@ angular.module('maks3w.github.directives', ['maks3w.github'])
         '</label>' +
         '<label>Commit msg <input type="text" ng-model="commitMsg" ng-bind="Merge PR #{{pr.number}}" required/></label>' +
         '<div class="control-group"><label ng-repeat="(branch, merge) in branches" class="checkbox inline">' +
-        '<input type="checkbox" value="{{ branch }}" ng-model="branches[branch]" ng-checked="merge"/>  {{ branch }}' +
+        '<input type="checkbox" value="{{ branch }}" ng-model="branches[branch]" ng-checked="merge" ng-change="filterSelectedBranches()" />  {{ branch }}' +
         '</label></div>' +
         '<input type="submit" class="btn btn-danger" value="Merge" ng-disabled="mergeFrm.$invalid"/>' +
         '</form>',

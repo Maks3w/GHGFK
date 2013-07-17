@@ -3,6 +3,106 @@
  */
 
 angular.module('maks3w.github.directives', ['maks3w.github'])
+  .directive('ghBranchCreateMenu', function () {
+    return {
+      restrict: 'E',
+      scope: {
+        repo: '=repo',
+        bases: '=bases',
+        branchName: '=name'
+      },
+      template: '<div class="btn-group">' +
+        '<button class="btn btn-warning gh-branch-create" tabindex="-1" name="{{branchName}}" base="{{ bases[0] }}" repo="{{ repo }}" title="Create branch {{ branchName }} from {{ bases[0] }}">' +
+        '<span class="type-icon octicon octicon-git-branch-create"></span>' +
+        ' {{ branchName }}' +
+        '</button>' +
+        '<button class="btn btn-warning dropdown-toggle" data-toggle="dropdown" tabindex="-1">' +
+        '<span class="caret"></span>' +
+        '</button>' +
+        '<ul class="dropdown-menu">' +
+        '<li ng-repeat="base in bases">' +
+        '<a class="gh-branch-create" name="{{ branchName }}" base="{{ base }}" repo="{{ repo }}" title="Create branch {{ branchName }} from {{ base }}">' +
+        '{{ base }}' +
+        '</a>' +
+        '</li>' +
+        '</ul>' +
+        '</div>',
+      replace: true
+    }
+  })
+  .directive('ghMergeMenu', function () {
+    return {
+      restrict: 'E',
+      scope: {
+        repo: '=repo',
+        bases: '=bases',
+        head: '=head',
+        msg: '=msg'
+      },
+      template: '<div class="btn-group">' +
+        '<button class="btn btn-warning gh-merge" tabindex="-1" head="{{head}}" base="{{ bases[0] }}" repo="{{ repo }}" msg="{{ msg }} into {{ bases[0] }}" title="Merge {{ head }} into {{ bases[0] }}">' +
+        '<span class="type-icon octicon octicon-git-merge"></span>' +
+        ' {{ head }} in {{ bases[0] }}' +
+        '</button>' +
+        '<button class="btn btn-warning dropdown-toggle" data-toggle="dropdown" tabindex="-1">' +
+        '<span class="caret"></span>' +
+        '</button>' +
+        '<ul class="dropdown-menu">' +
+        '<li ng-repeat="base in bases">' +
+        '<a class="gh-merge" head="{{ head }}" base="{{ base }}" repo="{{ repo }}" msg="{{ msg }} into {{ base }}" title="Merge {{ head }} into {{ base }}">' +
+        '{{ base }}' +
+        '</a>' +
+        '</li>' +
+        '</ul>' +
+        '</div>',
+      replace: true
+    }
+  })
+  .directive('ghBranchCreate', function () {
+    return {
+      restrict: 'AC',
+      controller: ['$scope', 'github.repository', function ($scope, repoFactory) {
+        $scope.createBranch = function (repoFullName, branchName, base) {
+          return repoFactory(repoFullName).createBranch(branchName, base);
+        }
+      }],
+      link: function (scope, element, attrs) {
+        element.bind('click', function () {
+          scope.createBranch(attrs.repo, attrs.name, attrs.base);
+        });
+      }
+    }
+  })
+  .directive('ghBranchDelete', function () {
+    return {
+      restrict: 'AC',
+      controller: ['$scope', 'github.repository', function ($scope, repoFactory) {
+        $scope.deleteBranch = function (repoFullName, branchName) {
+          return repoFactory(repoFullName).deleteBranch(branchName);
+        }
+      }],
+      link: function (scope, element, attrs) {
+        element.bind('click', function () {
+          scope.deleteBranch(attrs.repo, attrs.name);
+        });
+      }
+    }
+  })
+  .directive('ghMerge', function () {
+    return {
+      restrict: 'AC',
+      controller: ['$scope', 'github.repository', function ($scope, repoFactory) {
+        $scope.mergePr = function (repo, base, head, msg) {
+          return repoFactory(repo).mergeBranch(head, base, msg);
+        }
+      }],
+      link: function (scope, element, attrs) {
+        element.bind('click', function () {
+          scope.mergePr(attrs.repo, attrs.base, attrs.head, attrs.msg);
+        });
+      }
+    }
+  })
   .directive('mergeButton', function () {
     return {
       restrict: 'E',
@@ -112,11 +212,10 @@ angular.module('maks3w.github.directives', ['maks3w.github'])
                 });
               });
             });
-
           });
         }
       }],
-      template: '<form ng-model="pr" ng-submit="merge()" name="mergeFrm" novalidate>' +
+      template: '<div><form ng-model="pr" ng-submit="merge()" name="mergeFrm" novalidate ng-init="isCollapsed = true">' +
         '<label>Patch type' +
         '<select ng-model="patchType" required>' +
         '<option value="">Select patch type</option>' +
@@ -129,8 +228,30 @@ angular.module('maks3w.github.directives', ['maks3w.github'])
         '<input type="checkbox" value="{{ branch }}" ng-model="branches[branch]" ng-checked="merge" ng-change="filterSelectedBranches()" />  {{ branch }}' +
         '</label></div>' +
         '<input type="submit" class="btn btn-danger" value="Merge" ng-disabled="mergeFrm.$invalid"/>' +
-        '</form>',
-      replace: true,
-      transclude: true
+        '<a class="btn" ng-click="isCollapsed = !isCollapsed">' +
+        '<span class="type-icon octicon" ng-class="{ true:\'octicon-chevron-down\', false:\'octicon-chevron-up\' }[isCollapsed]"></span>' +
+        'Step by step' +
+        '<span class="type-icon octicon" ng-class="{ true:\'octicon-chevron-down\', false:\'octicon-chevron-up\' }[isCollapsed]"></span>' +
+        '</a>' +
+        '</form>' +
+        '<div ng-hide="isCollapsed">' +
+        // create branch buttons
+        '<gh-branch-create-menu bases="selectedBranches" name="localPrBranch" repo="pr.base.repo.full_name"></gh-branch-create-menu>' +
+        // merge PR in local branch button
+        '<button class="btn btn-warning gh-merge" repo="{{pr.base.repo.full_name}}" base="{{localPrBranch}}" head="{{pr.originalElement.head.sha}}" msg="{{ commitMsg }}" title="Merge PR #{{ pr.number }} in {{ localPrBranch }} with message {{ commitMsg }}">' +
+        '<span class="type-icon octicon octicon-git-merge"></span>' +
+        ' #{{ pr.number }} in {{ localPrBranch }}' +
+        '</button>' +
+        '<a class="btn" href="{{ pr.base.repo.html_url }}/tree/{{ localPrBranch  }}" target="_blank">Browse files and edit</a>' +
+        // Merge PR in final branches button
+        '<gh-merge-menu bases="selectedBranches" head="localPrBranch" repo="pr.base.repo.full_name" msg="commitMsg"></gh-merge-menu>' +
+        // delete local branch button
+        '<button class="btn btn-danger gh-branch-delete" repo="{{pr.base.repo.full_name}}" name="{{localPrBranch}}" title="Delete {{ localPrBranch }}">' +
+        '<span class="type-icon octicon octicon-git-branch-delete"></span>' +
+        ' {{ localPrBranch }}' +
+        '</button>' +
+        '</div>' +
+        '</div>',
+      replace: true
     };
   });

@@ -33,7 +33,14 @@ angular.module('maks3w.github', ['restangular'])
         });
         RestangularConfigurer.setResponseExtractor(function (response) { // workaround to field conflict pr.head with restangular http method head
           var newResponse = response;
-          newResponse.originalElement = angular.copy(response);
+          if (angular.isArray(response)) {
+            angular.forEach(newResponse, function(value, key) {
+              newResponse[key].originalElement = angular.copy(value);
+            });
+          } else {
+            newResponse.originalElement = angular.copy(response);
+          }
+
           return newResponse;
         });
       });

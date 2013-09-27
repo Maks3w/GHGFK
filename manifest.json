@@ -1,0 +1,28 @@
+{
+  "name": "GHGFK: GitHub Git Flow Killer",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "Merge GitHub's pull requests with git flow",
+  "homepage_url": "http://maks3w.github.io/GHGFK/",
+  "options_page": "app/options.html",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://github.com/*/pull/*"
+      ],
+      "js": [
+        "app/lib/jquery/jquery-2.0.3.min.js",
+        "app/lib/angular/angular.js",
+        "app/lib/lodash.js",
+        "app/lib/restangular.js",
+        "app/lib/github/github.js",
+        "app/lib/github/github-directives.js",
+        "app/js/controllers.js",
+        "extension/inject.js"
+      ]
+    }
+  ],
+  "permissions": [
+    "storage"
+  ]
+}

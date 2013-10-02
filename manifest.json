@@ -19,6 +19,9 @@
         "app/lib/github/github-directives.js",
         "app/js/controllers.js",
         "extension/inject.js"
+      ],
+      "css": [
+        "app/css/bootstrap.css"
       ]
     }
   ],

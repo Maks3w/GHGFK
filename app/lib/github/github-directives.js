@@ -227,8 +227,8 @@ angular.module('maks3w.github.directives', ['maks3w.github'])
         '<div class="control-group"><label ng-repeat="(branch, merge) in branches" class="checkbox inline">' +
         '<input type="checkbox" value="{{ branch }}" ng-model="branches[branch]" ng-checked="merge" ng-change="filterSelectedBranches()" />  {{ branch }}' +
         '</label></div>' +
-        '<input type="submit" class="btn btn-danger" value="Merge" ng-disabled="mergeFrm.$invalid"/>' +
-        '<a class="btn" ng-click="isCollapsed = !isCollapsed">' +
+        '<input type="submit" class="button primary" value="Merge" ng-disabled="mergeFrm.$invalid"/>' +
+        '<a class="button" ng-click="isCollapsed = !isCollapsed">' +
         '<span class="type-icon octicon" ng-class="{ true:\'octicon-chevron-down\', false:\'octicon-chevron-up\' }[isCollapsed]"></span>' +
         'Step by step' +
         '<span class="type-icon octicon" ng-class="{ true:\'octicon-chevron-down\', false:\'octicon-chevron-up\' }[isCollapsed]"></span>' +

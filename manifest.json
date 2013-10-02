@@ -21,7 +21,7 @@
         "extension/inject.js"
       ],
       "css": [
-        "app/css/bootstrap.css"
+        "extension/css/bootstrap.css"
       ]
     }
   ],

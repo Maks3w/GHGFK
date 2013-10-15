@@ -18,6 +18,7 @@
         "app/lib/github/github.js",
         "app/lib/github/github-directives.js",
         "app/js/controllers.js",
+        "extension/js/bootstrap.js",
         "extension/inject.js"
       ],
       "css": [

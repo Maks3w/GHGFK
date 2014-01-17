@@ -174,7 +174,7 @@ angular.module('maks3w.github.directives', ['maks3w.github'])
                 }
                 _simpleMerge(pr, commitMsg, selectedBranches[0]);
               } else {
-                gitFlowMerge(pr, $scope.patchType + '/' + pr.number, commitMsg, 'master', 'develop')
+                gitFlowMerge(pr, $scope.patchType + '/' + pr.number, commitMsg, 'master', 'develop');
               }
             });
           });

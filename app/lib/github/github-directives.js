@@ -189,7 +189,6 @@ angular.module('maks3w.github.directives', ['maks3w.github'])
                     return av - ab;
                   });
 
-                  var selectedBranches = $scope.selectedBranches;
                   if (selectedBranches.indexOf('master') != -1 ) // PR goes against MASTER
                   {    
                       milestoneNumber = milestones[0].number;

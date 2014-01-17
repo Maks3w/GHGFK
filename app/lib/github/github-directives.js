@@ -176,6 +176,36 @@ angular.module('maks3w.github.directives', ['maks3w.github'])
               } else {
                 gitFlowMerge(pr, $scope.patchType + '/' + pr.number, commitMsg, 'master', 'develop');
               }
+
+              repository.getMilestones().then(function(milestones){
+            
+                  if(milestones.length == 0)
+                  {
+                    return;
+                  }
+                  milestones.sort(function(a,b){
+                    av = a.title.replace('.','');
+                    ab = b.title.replace('.','');
+                    return av - ab;
+                  });
+
+                  var selectedBranches = $scope.selectedBranches;
+                  if (selectedBranches.indexOf('master') != -1 ) // PR goes against MASTER
+                  {    
+                      milestoneNumber = milestones[0].number;
+                  }
+                  else
+                  {
+                      if(milestones.length < 2) // If only exists 1 milestone, do nothing
+                      {
+                        return;
+                      }
+                      milestoneNumber = milestones[1].number;
+                  }
+                  repository.updateIssue(pr.number, {
+                    "milestone" : milestoneNumber
+                  });
+              });
             });
           });
         };

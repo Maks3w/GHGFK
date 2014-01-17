@@ -92,6 +92,9 @@ angular.module('maks3w.github', ['restangular'])
         },
         updateIssue: function (number, args) {
           return repoApi.one('issues', number).patch(args);
+        },
+        getMilestones: function () {
+          return repoApi.all('milestones').getList();
         }
       };
 

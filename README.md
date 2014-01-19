@@ -1,3 +1,3 @@
 # GHGFK - GitHub Git Flow Killer
 
-This project offers a web application and Google Chrome Extension for merge GitHub's pull requests following the steps of Git Flow with one click using GitHub API
+A Webapp and Google Chrome Extension to merge GitHub's pull requests with a single click thanks to Git Flow and the GitHub API

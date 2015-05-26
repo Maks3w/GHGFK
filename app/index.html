@@ -4,32 +4,30 @@
     <meta charset="utf-8">
     <title>Merge GitHub's PRs with Git Flow style</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/bootstrap.css"/>
-    <link rel="stylesheet" href="css/bootstrap-responsive.min.css"/>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/github.css"/>
     <link rel="stylesheet" href="css/app.css"/>
 </head>
 <body>
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <button type="button" class="button btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="brand" href="#">GHGFK</a>
-
-            <div class="nav-collapse collapse">
-                <ul class="nav">
-                    <li><a href="#/selectRepo">Select repository</a></li>
-                </ul>
-            </div>
-            <div ng-show="user" class="brand" style="float:right">Welcome {{ user }}</div>
-            <!--/.nav-collapse -->
-        </div>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">GHGFK</a>
     </div>
-</div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="#/selectRepo">Select repository</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+    <div ng-show="user" class="brand" style="float:right">Welcome {{ user }}</div>
+  </div>
+</nav>
 
 <div class="container">
 
@@ -37,8 +35,10 @@
 
     GitHub token is saved in the browser's localStorage
     <div ng-controller="Alert">
-        <div class="alert alert-{{ alert.type }}" ng-repeat="alert in alerts">
-            <button type="button" class="close" ng-click="close($index)">&times;</button>
+        <div class="alert alert-{{ alert.type }}" ng-repeat="alert in alerts" role="alert">
+            <button type="button" class="close" ng-click="close($index)" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
             {{alert.msg}}
         </div>
     </div>
@@ -48,16 +48,16 @@
     <form ng-submit="login()" class="form-horizontal form-signin">
         <h2 class="form-signin-heading">Please provide a GitHub token</h2>
 
-        <div class="control-group">
-            <label class="control-label" for="githubToken">Token</label>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="githubToken">Token</label>
 
             <div class="controls">
                 <input type="text" ng-model="github_token" id="githubToken" required/>
             </div>
         </div>
-        <div class="control-group">
+        <div class="form-group">
             <div class="controls">
-                <button type="submit" class="button primary">Sign in</button>
+                <button type="submit" class="btn btn-primary">Sign in</button>
             </div>
         </div>
     </form>
@@ -65,18 +65,18 @@
 <script type="text/ng-template" id="partials/selectRepository.html">
     <form ng-submit="showPRs()">
         <label>Organization
-            <select ng-model="organization" ng-options="o.login for o in organizations" ng-change="fillRepositories()"
+            <select ng-model="organization" ng-options="o.login for o in organizations" ng-change="fillRepositories(organization)"
                     required ng-disabled="!organizations">
                 <option value="">Select an organization</option>
             </select>
         </label>
         <label>Repository
-            <select ng-model="repository" ng-options="r.full_name for r in repositories" ng-change="showPRs()"
+            <select ng-model="repository" ng-options="r.name for r in repositories" ng-change="showPRs()"
                     required ng-disabled="!repositories">
                 <option value="">You must select an organization first</option>
             </select>
         </label>
-        <button class="button primary">Select</button>
+        <button class="btn btn-primary">Select</button>
     </form>
 </script>
 <script type="text/ng-template" id="partials/prList.html">
@@ -124,13 +124,11 @@
     </div>
 </script>
 
-<!-- In production use:
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
--->
-<script src="lib/angular/angular.js"></script>
-<script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.4.0.js"></script>
-<script src="lib/restangular.js"></script>
-<script src="lib/lodash.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-route/angular-route.min.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+<script src="bower_components/restangular/dist/restangular.min.js"></script>
+<script src="bower_components/lodash/lodash.min.js"></script>
 <script src="lib/github/github.js"></script>
 <script src="lib/github/github-directives.js"></script>
 <script src="js/app.js"></script>

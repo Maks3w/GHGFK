@@ -252,7 +252,7 @@ angular.module('maks3w.github.directives', ['maks3w.github'])
         '<option value="feature">Feature</option>' +
         '</select>' +
         '</label>' +
-        '<label>Commit msg <input type="text" ng-model="commitMsg" ng-bind="Merge PR #{{pr.number}}" required/></label>' +
+        '<label>Commit msg <input type="text" ng-model="commitMsg" ng-bind-template="Merge PR #{{pr.number}}" required/></label>' +
         '<div class="control-group"><label ng-repeat="(branch, merge) in branches" class="checkbox inline">' +
         '<input type="checkbox" value="{{ branch }}" ng-model="branches[branch]" ng-checked="merge" ng-change="filterSelectedBranches()" />  {{ branch }}' +
         '</label></div>' +

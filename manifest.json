@@ -3,26 +3,26 @@
   "version": "0.0.1",
   "manifest_version": 2,
   "description": "Merge GitHub's pull requests with git flow",
-  "homepage_url": "http://maks3w.github.io/GHGFK/",
-  "options_page": "app/options.html",
+  "homepage_url": "https://maks3w.github.io/GHGFK/",
+  "options_page": "extension/options/options.html",
   "content_scripts": [
     {
       "matches": [
         "https://github.com/*/pull/*"
       ],
       "js": [
-        "app/lib/jquery/jquery-2.0.3.min.js",
-        "app/lib/angular/angular.js",
-        "app/lib/lodash.js",
-        "app/lib/restangular.js",
+        "app/bower_components/jquery/dist/jquery.js",
+        "app/bower_components/angular/angular.js",
+        "app/bower_components/lodash/lodash.js",
+        "app/bower_components/restangular/dist/restangular.js",
         "app/lib/github/github.js",
         "app/lib/github/github-directives.js",
         "app/js/controllers.js",
-        "extension/js/bootstrap.js",
+        "app/bower_components/bootstrap/dist/js/bootstrap.js",
         "extension/inject.js"
       ],
       "css": [
-        "extension/css/bootstrap.css"
+        "app/bower_components/bootstrap/dist/css/bootstrap.css"
       ]
     }
   ],

@@ -48,7 +48,7 @@ angular.module('maks3w.github', ['restangular'])
   })
   .factory('github.repository', ['$github', '$q', function ($github, $q) {
     return function (fullName) {
-      var repoApi = $github.one('repos', fullName);
+      var repoApi = $github.all('repos/' + fullName);
       var refApi = repoApi.all('git').all('refs');
       var repo = {
         createBranch: function (branchName, branchSource) {

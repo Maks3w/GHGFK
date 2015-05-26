@@ -1,7 +1,7 @@
 'use strict';
 
 // Declare app level module which depends on filters, and services
-angular.module('GHGFK', ['GHGFK.controllers', 'maks3w.github', 'maks3w.github.directives', 'ui.bootstrap']).
+angular.module('GHGFK', ['GHGFK.controllers', 'maks3w.github', 'maks3w.github.directives', 'ui.bootstrap', 'ngRoute']).
   config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/login', {templateUrl: 'partials/login.html', controller: 'Login'});
     $routeProvider.when('/selectRepo', {templateUrl: 'partials/selectRepository.html', controller: 'SelectRepository'});

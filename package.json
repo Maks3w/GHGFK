@@ -1,0 +1,32 @@
+{
+  "name": "ghgfk",
+  "description": "GitHub Git Flow Killer. A tool for merge PRs with one click.",
+  "repository": "https://maks3w.github.io/GHGFK/",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "postinstall": "bower install",
+    "prestart": "npm install",
+    "start": "http-server -a localhost -p 8000 -c-1",
+    "pretest": "npm install",
+    "test": "karma start karma.conf.js",
+    "test-single-run": "karma start karma.conf.js --single-run",
+    "preupdate-webdriver": "npm install",
+    "update-webdriver": "webdriver-manager update",
+    "preprotractor": "npm run update-webdriver",
+    "protractor": "protractor e2e-tests/protractor.conf.js"
+  },
+  "devDependencies": {
+    "angular-mocks": "^1.3.15",
+    "bower": "^1.4.1",
+    "http-server": "^0.8.0",
+    "jasmine-core": "^2.3.4",
+    "karma": "^0.12.32",
+    "karma-chrome-launcher": "^0.1.12",
+    "karma-firefox-launcher": "^0.1.6",
+    "karma-jasmine": "^0.3.5",
+    "karma-junit-reporter": "^0.2.2",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "protractor": "^2.1.0"
+  }
+}

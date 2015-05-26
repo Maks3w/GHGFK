@@ -1,4 +1,4 @@
-var angularBaseElement = $('#js-pull-merging');
+var angularBaseElement = $('.js-pull-merging');
 var insertPoint = $('.merge-form-contents');
 
 if (angularBaseElement.length !== 0) {
@@ -18,13 +18,13 @@ if (angularBaseElement.length !== 0) {
       $injector.invoke(function ($github, $rootScope, $compile) {
         var $scope = angular.element(angularBaseElement).scope();
 
-        var regexp = new RegExp(/^\/(.*)\/pull\/(\d+)/)
+        var regexp = new RegExp(/^\/(.*)\/pull\/(\d+)/);
         var routeParams = regexp.exec(location.pathname);
         var repoFullName = routeParams[1];
         var prNumber = routeParams[2];
 
         console.log('GHGFK: Pull request');
-        $github.one('repos', repoFullName).one('pulls', prNumber).get().then(function (pr) {
+        $github.all('repos/' + repoFullName).one('pulls', prNumber).get().then(function (pr) {
           $scope.pr = pr;
 
           insertPoint.html($compile('<merge-button pr="pr" />')($scope));

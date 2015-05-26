@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en" ng-csp="">
+<head>
+    <meta charset="utf-8">
+    <title>Merge GitHub's PRs with Git Flow style</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../app/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../app/css/github.css"/>
+    <link rel="stylesheet" href="../../app/css/app.css"/>
+</head>
+<body>
+<div class="container">
+    <form ng-submit="login()" class="form-horizontal form-signin" data-ng-controller="Login">
+        <h2 class="form-signin-heading">Please provide a GitHub token</h2>
+
+        <div class="control-group">
+            <label class="control-label" for="githubToken">Token</label>
+
+            <div class="controls">
+                <input type="text" ng-model="github_token" id="githubToken" required/>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="button primary">Save</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="../../app/bower_components/angular/angular.min.js"></script>
+<script src="../../app/bower_components/restangular/dist/restangular.min.js"></script>
+<script src="../../app/bower_components/lodash/lodash.min.js"></script>
+<script src="../../app/lib/github/github.js"></script>
+<script src="../../app/lib/github/github-directives.js"></script>
+<script src="options.js"></script>
+<script src="../../app/js/controllers.js"></script>
+</body>
+</html>

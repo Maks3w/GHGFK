@@ -35,13 +35,18 @@ angular.module('GHGFK.controllers', []).
       });
     }
 
-    function fillRepositories() {
-      var repo = $scope.organization.login;
-      if (repo == 'My own repositories') {
-        $scope.repositories = $github.all('user').all('repos').getList();
+    function fillRepositories(organization) {
+      var promise;
+
+      if (organization.login == 'My own repositories') {
+        promise = $github.all('user').all('repos').getList();
       } else {
-        $scope.repositories = $github.one('orgs', repo).all('repos').getList();
+        promise = $github.allUrl('repos', organization.repos_url).getList();
       }
+
+      promise.then(function (repositories) {
+        $scope.repositories = repositories;
+      });
     }
   }).
   controller('PrList', function ($scope, $routeParams, $github) {
@@ -49,9 +54,12 @@ angular.module('GHGFK.controllers', []).
     $scope.per_page = $routeParams.per_page;
     $scope.currentPage = $routeParams.page;
     $scope.repo = encodeURIComponent($routeParams.repo);
-    $scope.prs = $github.one('repos', repoFullName).all('pulls').getList({
+    $github.all('repos/' + repoFullName).all('pulls').getList({
       page: $routeParams.page,
       per_page: $routeParams.per_page
-    });
+    })
+      .then(function (prs) {
+        $scope.prs = prs;
+      });
   })
 ;

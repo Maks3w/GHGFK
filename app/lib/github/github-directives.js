@@ -131,7 +131,7 @@ angular.module('maks3w.github.directives', ['maks3w.github'])
         }
 
         $scope.$watch('patchType', function () {
-          $scope.localPrBranch = $scope.patchType + '/' + pr.number;
+          $scope.localPrBranch = 'ghgfk-' + $scope.patchType + '/' + pr.number;
         });
 
         $scope.filterSelectedBranches = function () {

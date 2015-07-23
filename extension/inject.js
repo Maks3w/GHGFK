@@ -8,7 +8,7 @@ if (angularBaseElement.length !== 0) {
     var $injector = angular.bootstrap(angularBaseElement, ['GHGFK.controllers', 'maks3w.github', 'maks3w.github.directives']);
 
     chrome.storage.sync.get('githubToken', function (options) {
-      console.log('GHGFK: Retriving GitHub token');
+      console.log('GHGFK: Retrieving GitHub token');
 
       $injector.invoke(function ($githubConfigurator) {
         console.log('GHGFK: Setting GitHub token');

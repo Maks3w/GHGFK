@@ -21,11 +21,11 @@ angular.module('GHGFK.controllers', []).
       $location.path("/selectRepo");
     };
   }).
-  controller('SelectRepository',function ($scope, $location, $github) {
+  controller('SelectRepository',function ($scope, $github) {
     fillOrganizations();
     $scope.fillRepositories = fillRepositories;
-    $scope.showPRs = function () {
-      $location.path("/repo/" + encodeURIComponent($scope.repository.full_name) + '/page/1/per_page/20');
+    $scope.prListLink = function (repo) {
+      return "/repo/" + encodeURIComponent(encodeURIComponent(repo)) + '/page/1/per_page/20';
     };
 
     function fillOrganizations() {
@@ -37,11 +37,28 @@ angular.module('GHGFK.controllers', []).
 
     function fillRepositories(organization) {
       var promise;
+      var listParams = {
+        per_page: 200
+      };
 
       if (organization.login == 'My own repositories') {
-        promise = $github.all('user').all('repos').getList();
+        listParams = angular.extend(
+          listParams,
+          {
+            affiliation: 'owner,collaborator',
+            direction: 'asc',
+            sort: 'full_name'
+          }
+        );
+        promise = $github.all('user').all('repos').getList(listParams);
       } else {
-        promise = $github.allUrl('repos', organization.repos_url).getList();
+        listParams = angular.extend(
+          listParams,
+          {
+            type: 'member'
+          }
+        );
+        promise = $github.allUrl('repos', organization.repos_url).getList(listParams);
       }
 
       promise.then(function (repositories) {

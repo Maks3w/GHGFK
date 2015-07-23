@@ -63,21 +63,22 @@
     </form>
 </script>
 <script type="text/ng-template" id="partials/selectRepository.html">
-    <form ng-submit="showPRs()">
+    <form>
         <label>Organization
             <select ng-model="organization" ng-options="o.login for o in organizations" ng-change="fillRepositories(organization)"
                     required ng-disabled="!organizations">
                 <option value="">Select an organization</option>
             </select>
         </label>
-        <label>Repository
-            <select ng-model="repository" ng-options="r.name for r in repositories" ng-change="showPRs()"
-                    required ng-disabled="!repositories">
-                <option value="">You must select an organization first</option>
-            </select>
-        </label>
-        <button class="btn btn-primary">Select</button>
     </form>
+    <ul>
+        <li class="list-group-item js-list-browser-item clearfix js-navigation-item unread navigation-focus"
+            ng-repeat="repo in repositories">
+            <a href="#{{prListLink(repo.full_name)}}">
+                {{repo.full_name}}
+            </a>
+        </li>
+    </ul>
 </script>
 <script type="text/ng-template" id="partials/prList.html">
     <div class="pager">

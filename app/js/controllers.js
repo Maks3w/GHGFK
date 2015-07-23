@@ -18,15 +18,11 @@ angular.module('GHGFK.controllers', []).
     $scope.login = function () {
       $githubConfigurator.token = $scope.github_token;
       localStorage.githubToken = $scope.github_token;
-      $location.path("/selectRepo");
+      $location.path("/repo");
     };
   }).
-  controller('SelectRepository',function ($scope, $github) {
+  controller('OrgList', function ($scope, $github) {
     fillOrganizations();
-    $scope.fillRepositories = fillRepositories;
-    $scope.prListLink = function (repo) {
-      return "/repo/" + encodeURIComponent(encodeURIComponent(repo)) + '/page/1/per_page/20';
-    };
 
     function fillOrganizations() {
       $github.all('user').all('orgs').getList().then(function (orgs) {
@@ -34,6 +30,13 @@ angular.module('GHGFK.controllers', []).
         $scope.organizations = orgs;
       });
     }
+  }).
+  controller('RepoList', function ($scope, $routeParams, $github) {
+    fillRepositories($routeParams.organization)
+      .then(function (repositories) {
+        $scope.repositories = repositories;
+      })
+    ;
 
     function fillRepositories(organization) {
       var promise;
@@ -41,7 +44,7 @@ angular.module('GHGFK.controllers', []).
         per_page: 200
       };
 
-      if (organization.login == 'My own repositories') {
+      if (organization == 'My own repositories') {
         listParams = angular.extend(
           listParams,
           {
@@ -58,19 +61,17 @@ angular.module('GHGFK.controllers', []).
             type: 'member'
           }
         );
-        promise = $github.allUrl('repos', organization.repos_url).getList(listParams);
+        promise = $github.all('orgs').all(organization).all('repos').getList(listParams);
       }
 
-      promise.then(function (repositories) {
-        $scope.repositories = repositories;
-      });
+      return promise;
     }
   }).
   controller('PrList', function ($scope, $routeParams, $github) {
-    var repoFullName = decodeURIComponent($routeParams.repo);
+    var repoFullName = $routeParams.organization + '/' + $routeParams.repo;
     $scope.per_page = $routeParams.per_page;
     $scope.currentPage = $routeParams.page;
-    $scope.repo = encodeURIComponent($routeParams.repo);
+    $scope.repoFullName = repoFullName;
     $github.all('repos/' + repoFullName).all('pulls').getList({
       page: $routeParams.page,
       per_page: $routeParams.per_page

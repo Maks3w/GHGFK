@@ -22,7 +22,7 @@
     </div>
     <div id="navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li><a href="#/selectRepo">Select repository</a></li>
+        <li><a href="#/repo">Select repository</a></li>
       </ul>
     </div><!--/.nav-collapse -->
     <div ng-show="user" class="brand" style="float:right">Welcome {{ user }}</div>
@@ -62,19 +62,23 @@
         </div>
     </form>
 </script>
-<script type="text/ng-template" id="partials/selectRepository.html">
-    <form>
-        <label>Organization
-            <select ng-model="organization" ng-options="o.login for o in organizations" ng-change="fillRepositories(organization)"
-                    required ng-disabled="!organizations">
-                <option value="">Select an organization</option>
-            </select>
-        </label>
-    </form>
+<script type="text/ng-template" id="partials/orgList.html">
+    <h1>Select the organization</h1>
+    <ul>
+        <li class="list-group-item js-list-browser-item clearfix js-navigation-item unread navigation-focus"
+            ng-repeat="organization in organizations">
+            <a href="#/repo/{{organization.login}}">
+                {{organization.login}}
+            </a>
+        </li>
+    </ul>
+</script>
+<script type="text/ng-template" id="partials/repoList.html">
+    <h1>Select the repository</h1>
     <ul>
         <li class="list-group-item js-list-browser-item clearfix js-navigation-item unread navigation-focus"
             ng-repeat="repo in repositories">
-            <a href="#{{prListLink(repo.full_name)}}">
+            <a href="#/repo/{{repo.full_name}}">
                 {{repo.full_name}}
             </a>
         </li>
@@ -84,10 +88,10 @@
     <div class="pager">
         <ul>
             <li ng-hide="currentPage == 1" class="previous">
-                <a ng-href="#/repo/{{ repo }}/page/{{ currentPage - 1 }}/per_page/{{ per_page }}">« Previous</a>
+                <a ng-href="#/repo/{{ repoFullName }}/page/{{ currentPage - 1 }}/per_page/{{ per_page }}">« Previous</a>
             </li>
             <li ng-hide="prs.length != per_page" class="next">
-                <a ng-href="#/repo/{{ repo }}/page/{{ currentPage*1 + 1 }}/per_page/{{ per_page }}">Next »</a>
+                <a ng-href="#/repo/{{ repoFullName }}/page/{{ currentPage*1 + 1 }}/per_page/{{ per_page }}">Next »</a>
             </li>
         </ul>
     </div>
@@ -116,10 +120,10 @@
     <div class="pager">
         <ul>
             <li ng-hide="currentPage == 1" class="previous">
-                <a ng-href="#/repo/{{ repo }}/page/{{ currentPage - 1 }}/per_page/{{ per_page }}">« Previous</a>
+                <a ng-href="#/repo/{{ repoFullName }}/page/{{ currentPage - 1 }}/per_page/{{ per_page }}">« Previous</a>
             </li>
             <li ng-hide="prs.length != per_page" class="next">
-                <a ng-href="#/repo/{{ repo }}/page/{{ currentPage*1 + 1 }}/per_page/{{ per_page }}">Next »</a>
+                <a ng-href="#/repo/{{ repoFullName }}/page/{{ currentPage*1 + 1 }}/per_page/{{ per_page }}">Next »</a>
             </li>
         </ul>
     </div>

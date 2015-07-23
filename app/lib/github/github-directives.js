@@ -184,11 +184,12 @@ angular.module('maks3w.github.directives', ['maks3w.github'])
                     return;
                   }
                   milestones.sort(function(a,b){
-                    av = a.title.replace('.','');
-                    ab = b.title.replace('.','');
+                    var av = a.title.replace('.','');
+                    var ab = b.title.replace('.','');
                     return av - ab;
                   });
 
+                  var milestoneNumber;
                   if (selectedBranches.indexOf('master') != -1 ) // PR goes against MASTER
                   {    
                       milestoneNumber = milestones[0].number;

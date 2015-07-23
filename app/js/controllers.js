@@ -22,23 +22,25 @@ angular.module('GHGFK.controllers', []).
     };
   }).
   controller('OrgList', function ($scope, $github) {
-    fillOrganizations();
-
-    function fillOrganizations() {
-      $github.all('user').all('orgs').getList().then(function (orgs) {
+    fetchUserOrganizations()
+      .then(function (orgs) {
         orgs.unshift({login: 'My own repositories'});
         $scope.organizations = orgs;
-      });
+      })
+    ;
+
+    function fetchUserOrganizations() {
+      return $github.all('user').all('orgs').getList();
     }
   }).
   controller('RepoList', function ($scope, $routeParams, $github) {
-    fillRepositories($routeParams.organization)
+    fetchRepositories($routeParams.organization)
       .then(function (repositories) {
         $scope.repositories = repositories;
       })
     ;
 
-    function fillRepositories(organization) {
+    function fetchRepositories(organization) {
       var promise;
       var listParams = {
         per_page: 200

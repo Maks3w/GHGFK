@@ -1,4 +1,4 @@
 angular.element(document).ready(function () {
-  angular.bootstrap(document,['GHGFK.controllers', 'maks3w.github', 'maks3w.github.directives']);
+  angular.bootstrap(document,['GHGFK']);
   chrome.storage.sync.set({'githubToken': localStorage['githubToken']});
 });

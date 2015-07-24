@@ -17,8 +17,8 @@
         "app/bower_components/restangular/dist/restangular.js",
         "app/lib/github/github.js",
         "app/lib/github/github-directives.js",
-        "app/js/controllers.js",
         "app/bower_components/bootstrap/dist/js/bootstrap.js",
+        "extension/app.js",
         "extension/inject.js"
       ],
       "css": [

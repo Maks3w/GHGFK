@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-angular.module('GHGFK.controllers', []).
+angular.module('GHGFK').
   controller('Alert', ['$scope', function ($scope) {
     $scope.alerts = [];
     $scope.$on('alert.new', function (event, type, msg) {

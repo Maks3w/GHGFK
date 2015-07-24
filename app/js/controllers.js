@@ -12,15 +12,6 @@ angular.module('GHGFK').
       $scope.alerts.splice(index, 1);
     };
   }]).
-  controller('Login',function ($scope, $location, $rootScope, $githubConfigurator) {
-    $scope.github_token = localStorage.githubToken;
-
-    $scope.login = function () {
-      $githubConfigurator.token = $scope.github_token;
-      localStorage.githubToken = $scope.github_token;
-      $location.path("/repo");
-    };
-  }).
   controller('OrgList', function ($scope, $github) {
     fetchUserOrganizations()
       .then(function (orgs) {

@@ -10,11 +10,11 @@
 </head>
 <body>
 <div class="container">
-    <form ng-submit="login()" class="form-horizontal form-signin" data-ng-controller="Login">
+    <form ng-submit="login()" class="form-horizontal form-signin" ng-controller="LoginController">
         <h2 class="form-signin-heading">Please provide a GitHub token</h2>
 
-        <div class="control-group">
-            <label class="control-label" for="githubToken">Token</label>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="githubToken">Token</label>
 
             <div class="controls">
                 <input type="text" ng-model="github_token" id="githubToken" required/>
@@ -22,7 +22,7 @@
         </div>
         <div class="control-group">
             <div class="controls">
-                <button type="submit" class="button primary">Save</button>
+                <button type="submit" class="btn btn-primary">Login</button>
             </div>
         </div>
     </form>
@@ -35,6 +35,7 @@
 <script src="../../app/lib/github/github-directives.js"></script>
 <script src="../app.js"></script>
 <script src="options.js"></script>
-<script src="../../app/js/controllers.js"></script>
+<script src="../../app/js/Controller/LoginController.js"></script>
+<script src="../../app/js/Service/AuthenticationService.js"></script>
 </body>
 </html>

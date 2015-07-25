@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/github.css"/>
     <link rel="stylesheet" href="css/app.css"/>
+    <style>
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak, .ng-hide:not(.ng-hide-animate) {
+            display: none !important;
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -24,7 +29,7 @@
       <ul class="nav navbar-nav">
         <li><a href="#/repo">Select repository</a></li>
       </ul>
-      <div ng-show="user" class="navbar-right navbar-brand pull-right">
+      <div ng-show="user" class="navbar-right navbar-brand pull-right ng-cloak">
           <a href="#/login">
             Welcome {{ user.name }}
           </a>
@@ -38,7 +43,7 @@
     <h2>DON'T USE THIS IN PRODUCTION</h2>
 
     GitHub token is saved in the browser's localStorage
-    <div ng-controller="Alert">
+    <div ng-controller="Alert" class="ng-cloak">
         <div class="alert alert-{{ alert.type }}" ng-repeat="alert in alerts" role="alert">
             <button type="button" class="close" ng-click="close($index)" aria-label="Close">
               <span aria-hidden="true">&times;</span>

@@ -12,10 +12,12 @@ angular.module('GHGFK').
       $scope.alerts.splice(index, 1);
     };
   }]).
-  controller('OrgList', function ($scope, $github) {
+  controller('OrgList', function (AuthenticationService, $scope, $github) {
+    var loggedUser = AuthenticationService.getIdentity();
+
     fetchUserOrganizations()
       .then(function (orgs) {
-        orgs.unshift({login: 'My own repositories'});
+        orgs.unshift(loggedUser);
         $scope.organizations = orgs;
       })
     ;
@@ -24,7 +26,7 @@ angular.module('GHGFK').
       return $github.all('user').all('orgs').getList();
     }
   }).
-  controller('RepoList', function ($scope, $routeParams, $github) {
+  controller('RepoList', function (AuthenticationService, $scope, $routeParams, $github) {
     fetchRepositories($routeParams.organization)
       .then(function (repositories) {
         $scope.repositories = repositories;
@@ -37,7 +39,8 @@ angular.module('GHGFK').
         per_page: 200
       };
 
-      if (organization == 'My own repositories') {
+      var loggedUser = AuthenticationService.getIdentity();
+      if (organization === loggedUser.login) {
         listParams = angular.extend(
           listParams,
           {

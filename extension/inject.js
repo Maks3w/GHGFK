@@ -1,8 +1,11 @@
-var angularBaseElement = $('.js-pull-merging');
-var insertPoint = $('.merge-form-contents');
+var angularBaseElement = document.getElementsByClassName('js-pull-merging').item(0);
+var insertPointElement = document.getElementsByClassName('merge-form-contents').item(0);
 
-if (angularBaseElement.length !== 0) {
-  angular.element(angularBaseElement).ready(function () {
+if (angularBaseElement && insertPointElement) {
+  angularBaseElement = angular.element(angularBaseElement);
+  insertPointElement = angular.element(insertPointElement);
+
+  angularBaseElement.ready(function () {
     console.log('GHGFK: Start');
 
     var $injector = angular.bootstrap(angularBaseElement, ['GHGFK']);
@@ -16,8 +19,6 @@ if (angularBaseElement.length !== 0) {
       });
 
       $injector.invoke(function ($github, $rootScope, $compile) {
-        var $scope = angular.element(angularBaseElement).scope();
-
         var regexp = new RegExp(/^\/(.*)\/pull\/(\d+)/);
         var routeParams = regexp.exec(location.pathname);
         var repoFullName = routeParams[1];
@@ -25,9 +26,10 @@ if (angularBaseElement.length !== 0) {
 
         console.log('GHGFK: Pull request');
         $github.all('repos/' + repoFullName).one('pulls', prNumber).get().then(function (pr) {
+          var $scope = insertPointElement.scope();
           $scope.pr = pr;
 
-          insertPoint.html($compile('<merge-button pr="pr" />')($scope));
+          insertPointElement.html($compile('<merge-button pr="pr" />')($scope));
         });
       });
     });

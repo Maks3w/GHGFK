@@ -13,7 +13,6 @@
       "js": [
         "app/bower_components/jquery/dist/jquery.js",
         "app/bower_components/angular/angular.js",
-        "app/bower_components/lodash/lodash.js",
         "app/bower_components/restangular/dist/restangular.js",
         "app/lib/github/github.js",
         "app/lib/github/github-directives.js",

@@ -113,7 +113,7 @@ angular.module('maks3w.github.directives', ['maks3w.github'])
         selectedBranches: '&',
         localPrBranch: '&'
       },
-      controller: ['$scope', 'github.repository', '$rootScope', '$github', function ($scope, repoFactory, $rootScope, $github) {
+      controller: ['$scope', 'github.repository', '$rootScope', 'github.loggedUser', function ($scope, repoFactory, $rootScope, githubLoggedUserService) {
         var pr = $scope.pr;
         var prOriginalDstBranch = pr.base.ref;
 
@@ -154,7 +154,7 @@ angular.module('maks3w.github.directives', ['maks3w.github'])
             }
 
             // Assign the PR to the user for prevent merge by other user
-            $github.one('user').get().then(function (user) {
+            githubLoggedUserService.getUser().then(function (user) {
               if (pr.assignee === null) {
                 repository.updateIssue(pr.number, {
                   "assignee": user.login

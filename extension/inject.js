@@ -18,20 +18,20 @@ if (angularBaseElement && insertPointElement) {
         $githubConfigurator.token = options.githubToken;
       });
 
-      $injector.invoke(function ($github, $rootScope, $compile) {
+      $injector.invoke(['github.repository','$rootScope', '$compile', function (repoFactory, $rootScope, $compile) {
         var regexp = new RegExp(/^\/(.*)\/pull\/(\d+)/);
         var routeParams = regexp.exec(location.pathname);
         var repoFullName = routeParams[1];
         var prNumber = routeParams[2];
 
         console.log('GHGFK: Pull request');
-        $github.all('repos/' + repoFullName).one('pulls', prNumber).get().then(function (pr) {
+        repoFactory(repoFullName).getPr(prNumber).then(function (pr) {
           var $scope = insertPointElement.scope();
           $scope.pr = pr;
 
           insertPointElement.html($compile('<merge-button pr="pr" />')($scope));
         });
-      });
+      }]);
     });
   });
 }

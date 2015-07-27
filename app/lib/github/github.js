@@ -46,6 +46,34 @@ angular.module('maks3w.github', ['restangular'])
       });
     }];
   })
+  .service('github.loggedUser', ['$github', function ($github) {
+    var userApi = $github.all('user');
+    var user = {
+      getUser: function () {
+        return $github.one('user').get();
+      },
+      getOrganizations: function (params) {
+        return userApi.all('orgs').getList(params);
+      },
+      getRepositories: function (params) {
+        return userApi.all('repos').getList(params);
+      }
+    };
+
+    return user;
+  }])
+  .factory('github.organization', ['$github', function ($github) {
+    return function (organization) {
+      var orgApi = $github.all('orgs').all(organization);
+      var org = {
+        getRepositories: function (params) {
+          return orgApi.all('repos').getList(params);
+        }
+      };
+
+      return org;
+    };
+  }])
   .factory('github.repository', ['$github', '$q', function ($github, $q) {
     return function (fullName) {
       var repoApi = $github.all('repos/' + fullName);
@@ -86,6 +114,9 @@ angular.module('maks3w.github', ['restangular'])
         },
         getPr: function (number) {
           return repoApi.one('pulls', number).get();
+        },
+        getPrs: function (params) {
+          return repoApi.all('pulls').getList(params);
         },
         getIssue: function (number) {
           return repoApi.one('issues', number).get();

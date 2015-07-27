@@ -33,10 +33,10 @@
       $githubConfigurator.token = gitHubToken;
       injector.get("$githubConfigurator").token = gitHubToken;
 
-      var $github = injector.get("$github");
+      var githubLoggedUserService = injector.get("github.loggedUser");
 
       var login = this;
-      var promise = $github.one("user").get();
+      var promise = githubLoggedUserService.getUser();
       promise.then(function (response) {
         login.setCredentials(gitHubToken, response);
 

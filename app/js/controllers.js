@@ -12,7 +12,8 @@ angular.module('GHGFK').
       $scope.alerts.splice(index, 1);
     };
   }]).
-  controller('OrgList', function (AuthenticationService, $scope, $github) {
+  controller('OrgList', ['AuthenticationService', '$scope', 'github.loggedUser',
+    function (AuthenticationService, $scope, githubLoggedUserService) {
     var loggedUser = AuthenticationService.getIdentity();
 
     fetchUserOrganizations()
@@ -23,10 +24,11 @@ angular.module('GHGFK').
     ;
 
     function fetchUserOrganizations() {
-      return $github.all('user').all('orgs').getList();
+      return githubLoggedUserService.getOrganizations();
     }
-  }).
-  controller('RepoList', function (AuthenticationService, $scope, $routeParams, $github) {
+  }]).
+  controller('RepoList', ['AuthenticationService', '$scope', '$routeParams', 'github.loggedUser', 'github.organization',
+    function (AuthenticationService, $scope, $routeParams, githubLoggedUserService, githubOrganizationFactory) {
     fetchRepositories($routeParams.organization)
       .then(function (repositories) {
         $scope.repositories = repositories;
@@ -49,7 +51,7 @@ angular.module('GHGFK').
             sort: 'full_name'
           }
         );
-        promise = $github.all('user').all('repos').getList(listParams);
+        promise = githubLoggedUserService.getRepositories(listParams);
       } else {
         listParams = angular.extend(
           listParams,
@@ -57,23 +59,23 @@ angular.module('GHGFK').
             type: 'member'
           }
         );
-        promise = $github.all('orgs').all(organization).all('repos').getList(listParams);
+        promise = githubOrganizationFactory(organization).getRepositories(listParams);
       }
 
       return promise;
     }
-  }).
-  controller('PrList', function ($scope, $routeParams, $github) {
+  }]).
+  controller('PrList', ['$scope', '$routeParams', 'github.repository', function ($scope, $routeParams, githubRepoFactory) {
     var repoFullName = $routeParams.organization + '/' + $routeParams.repo;
     $scope.per_page = $routeParams.per_page;
     $scope.currentPage = $routeParams.page;
     $scope.repoFullName = repoFullName;
-    $github.all('repos/' + repoFullName).all('pulls').getList({
+    githubRepoFactory(repoFullName).getPrs({
       page: $routeParams.page,
       per_page: $routeParams.per_page
     })
       .then(function (prs) {
         $scope.prs = prs;
       });
-  })
+  }])
 ;

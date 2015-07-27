@@ -74,28 +74,22 @@ angular.module('maks3w.github', ['restangular'])
       return org;
     };
   }])
-  .factory('github.repository', ['$github', '$q', function ($github, $q) {
+  .factory('github.repository', ['$github', function ($github) {
     return function (fullName) {
       var repoApi = $github.all('repos/' + fullName);
       var refApi = repoApi.all('git').all('refs');
       var repo = {
         createBranch: function (branchName, branchSource) {
           console.log('Making ' + branchName + ' based in ' + branchSource);
-          var promise = $q.defer();
-          // FIXME return promise
-          repo.getBranch(branchSource).then(
+          return repo.getBranch(branchSource)
+            .then(
             function (data) {
-              promise.resolve(refApi.post({
+              promise.resolve($github.post(refApi, {
                 "ref": 'refs/heads/' + branchName,
                 "sha": data.object.sha
               }));
-            },
-            function (response) {
-              promise.reject(response);
             }
           );
-
-          return promise.promise;
         },
         getBranch: function (branch) {
           return refApi.one('heads', branch).get();

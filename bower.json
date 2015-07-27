@@ -7,7 +7,6 @@
   "dependencies": {
     "angular": "~1.4",
     "angular-route": "~1.4",
-    "bootstrap": "~3.3.4",
-    "restangular": "~1.5.1"
+    "bootstrap": "~3.3.4"
   }
 }

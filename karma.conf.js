@@ -5,7 +5,6 @@ module.exports = function (config) {
         files: [
             'app/bower_components/angular/angular.js',
             'app/bower_components/angular-route/angular-route.min.js',
-            'app/bower_components/restangular/dist/restangular.js',
             'app/lib/github/*.js',
             'app/js/**/*.js',
             'node_modules/angular-mocks/angular-mocks.js',

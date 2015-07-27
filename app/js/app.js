@@ -22,4 +22,22 @@ angular.module('GHGFK', ['maks3w.github', 'maks3w.github.directives', 'ngRoute']
       }
     });
   }])
+  .config(['$httpProvider', function ($httpProvider) {
+    $httpProvider.interceptors.push('httpResponseInterceptor');
+  }])
+  .factory('httpResponseInterceptor', ['$q', '$location', '$rootScope', function ($q, $location, $rootScope) {
+    return {
+      responseError: notifyAndRedirect
+    };
+
+    function notifyAndRedirect(response) {
+      if (response.status === 401) {
+        $location.path('/login');
+      }
+
+      $rootScope.$broadcast('alert.new', 'error', response.data.message);
+
+      return $q.reject(response);
+    }
+  }])
 ;

@@ -6,8 +6,8 @@
     .factory("AuthenticationService", AuthenticationService)
   ;
 
-  AuthenticationService.$inject = ["$rootScope", "$githubConfigurator"];
-  function AuthenticationService($rootScope, $githubConfigurator) {
+  AuthenticationService.$inject = ["$rootScope", "$githubConfigurator", "github.loggedUser"];
+  function AuthenticationService($rootScope, $githubConfigurator, githubLoggedUserService) {
     var service = {};
 
     service.login = login;
@@ -28,22 +28,15 @@
         gitHubToken = this.getCredentials();
       }
 
-      var injector = angular.injector(["maks3w.github", "ng"]);
-
       $githubConfigurator.token = gitHubToken;
-      injector.get("$githubConfigurator").token = gitHubToken;
-
-      var githubLoggedUserService = injector.get("github.loggedUser");
 
       var login = this;
-      var promise = githubLoggedUserService.getUser();
-      promise.then(function (response) {
-        login.setCredentials(gitHubToken, response);
+      return githubLoggedUserService.getUser()
+        .then(function (response) {
+          login.setCredentials(gitHubToken, response);
 
-        return response;
-      });
-
-      return promise;
+          return response;
+        });
     }
 
     /**

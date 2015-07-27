@@ -2,7 +2,7 @@
  * AngularJS module for GitHub API
  */
 
-angular.module('maks3w.github', ['restangular'])
+angular.module('maks3w.github', ['ng'])
   .provider('$githubConfigurator', function () {
     var apiUrl = 'https://api.github.com';
     var token;
@@ -14,49 +14,69 @@ angular.module('maks3w.github', ['restangular'])
       }
     }
   })
-  .provider('$github', function () {
+  .factory('$github', ['$githubConfigurator', '$http', function (config, $http) {
+    var configurator = config;
+    function makeRequest(method, uri, data) {
+      var headers = {
+        Accept: 'application/vnd.github.raw',
+        Authorization: 'token ' + configurator.token
+      };
 
-    this.$get = ['$githubConfigurator', 'Restangular', '$rootScope', function (config, Restangular, $rootScope) {
-      return Restangular.withConfig(function (RestangularConfigurer) {
-        RestangularConfigurer.setBaseUrl(config.apiUrl);
-        RestangularConfigurer.setDefaultHeaders({
-          Accept: 'application/vnd.github.raw',
-          'Content-Type': 'application/json',
-          Authorization: 'token ' + config.token
-        });
-        RestangularConfigurer.setDefaultRequestParams({
-          per_page: 100
-        });
-        RestangularConfigurer.setErrorInterceptor(function (response) {
-          // TODO decouple this
-          $rootScope.$broadcast('alert.new', 'error', response.data.message);
-        });
-        RestangularConfigurer.setResponseExtractor(function (response) { // workaround to field conflict pr.head with restangular http method head
-          var newResponse = response;
-          if (angular.isArray(response)) {
-            angular.forEach(newResponse, function(value, key) {
-              newResponse[key].originalElement = angular.copy(value);
-            });
-          } else {
-            newResponse.originalElement = angular.copy(response);
-          }
+      method = method.toLowerCase();
 
-          return newResponse;
-        });
-      });
-    }];
-  })
+      var config = {
+        method: method,
+        url: configurator.apiUrl + uri,
+        headers: headers
+      };
+
+      switch (method) {
+        case "get":
+          config.params = data;
+          break;
+        case "patch":
+        case "post":
+        case "put":
+          config.data = data;
+          break;
+      }
+
+      return $http(config)
+        .then(function (response) {
+          return response.data;
+        }
+      );
+    }
+
+    return {
+      get: function (uri, params) {
+        return makeRequest('get', uri, params);
+      },
+      patch: function (uri, data) {
+        return makeRequest('patch', uri, data);
+      },
+      post: function (uri, data) {
+        return makeRequest('post', uri, data);
+      },
+      put: function (uri, data) {
+        return makeRequest('put', uri, data);
+      },
+      delete: function (uri) {
+        return makeRequest('delete', uri);
+      }
+    };
+  }])
   .service('github.loggedUser', ['$github', function ($github) {
-    var userApi = $github.all('user');
+    var userApi = '/user';
     var user = {
       getUser: function () {
-        return $github.one('user').get();
+        return $github.get(userApi);
       },
       getOrganizations: function (params) {
-        return userApi.all('orgs').getList(params);
+        return $github.get(userApi + '/orgs', params);
       },
       getRepositories: function (params) {
-        return userApi.all('repos').getList(params);
+        return $github.get(userApi + '/repos', params);
       }
     };
 
@@ -64,10 +84,10 @@ angular.module('maks3w.github', ['restangular'])
   }])
   .factory('github.organization', ['$github', function ($github) {
     return function (organization) {
-      var orgApi = $github.all('orgs').all(organization);
+      var orgApi = '/orgs/' + organization;
       var org = {
         getRepositories: function (params) {
-          return orgApi.all('repos').getList(params);
+          return $github.get(orgApi + '/repos', params);
         }
       };
 
@@ -76,8 +96,8 @@ angular.module('maks3w.github', ['restangular'])
   }])
   .factory('github.repository', ['$github', function ($github) {
     return function (fullName) {
-      var repoApi = $github.all('repos/' + fullName);
-      var refApi = repoApi.all('git').all('refs');
+      var repoApi = '/repos/' + fullName;
+      var refApi = repoApi + '/git/refs';
       var repo = {
         createBranch: function (branchName, branchSource) {
           console.log('Making ' + branchName + ' based in ' + branchSource);
@@ -92,34 +112,34 @@ angular.module('maks3w.github', ['restangular'])
           );
         },
         getBranch: function (branch) {
-          return refApi.one('heads', branch).get();
+          return $github.get(refApi + '/heads/', branch);
         },
         deleteBranch: function (branch) {
           console.log('Removing ' + branch);
-          return refApi.one('heads', branch).remove();
+          return $github.delete(refApi + '/heads/', branch);
         },
         mergeBranch: function (head, base, commit) {
           console.log('Merging ' + head + ' in ' + base);
-          return repoApi.all('merges').post({
+          return $github.post(repoApi + '/merges', {
             "base": base,
             "head": head,
             "commit_message": commit
           });
         },
         getPr: function (number) {
-          return repoApi.one('pulls', number).get();
+          return $github.get(repoApi + '/pulls', number);
         },
         getPrs: function (params) {
-          return repoApi.all('pulls').getList(params);
+          return $github.get(repoApi + '/pulls', params);
         },
         getIssue: function (number) {
-          return repoApi.one('issues', number).get();
+          return $github.get(repoApi + '/issues', number);
         },
         updateIssue: function (number, args) {
-          return repoApi.one('issues', number).patch(args);
+          return $github.patch(repoApi + '/issues/' + number, args);
         },
         getMilestones: function () {
-          return repoApi.all('milestones').getList();
+          return $github.get(repoApi + '/milestones');
         }
       };
 

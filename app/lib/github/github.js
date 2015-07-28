@@ -19,7 +19,7 @@ angular.module('maks3w.github', ['ng'])
     function makeRequest(method, uri, data) {
       var headers = {
         Accept: 'application/vnd.github.raw',
-        Authorization: 'token ' + configurator.token
+        Authorization: `token ${configurator.token}`
       };
 
       method = method.toLowerCase();
@@ -73,10 +73,10 @@ angular.module('maks3w.github', ['ng'])
         return $github.get(userApi);
       },
       getOrganizations: function (params) {
-        return $github.get(userApi + '/orgs', params);
+        return $github.get(`${userApi}/orgs`, params);
       },
       getRepositories: function (params) {
-        return $github.get(userApi + '/repos', params);
+        return $github.get(`${userApi}/repos`, params);
       }
     };
 
@@ -84,10 +84,10 @@ angular.module('maks3w.github', ['ng'])
   }])
   .factory('github.organization', ['$github', function ($github) {
     return function (organization) {
-      var orgApi = '/orgs/' + organization;
+      var orgApi = `/orgs/${organization}`;
       var org = {
         getRepositories: function (params) {
-          return $github.get(orgApi + '/repos', params);
+          return $github.get(`${orgApi}/repos`, params);
         }
       };
 
@@ -96,50 +96,50 @@ angular.module('maks3w.github', ['ng'])
   }])
   .factory('github.repository', ['$github', function ($github) {
     return function (fullName) {
-      var repoApi = '/repos/' + fullName;
-      var refApi = repoApi + '/git/refs';
+      var repoApi = `/repos/${fullName}`;
+      var refApi = `${repoApi}/git/refs`;
       var repo = {
         createBranch: function (branchName, branchSource) {
-          console.log('Making ' + branchName + ' based in ' + branchSource);
+          console.log(`Making ${branchName} based in ${branchSource}`);
           return repo.getBranch(branchSource)
             .then(
             function (data) {
               promise.resolve($github.post(refApi, {
-                "ref": 'refs/heads/' + branchName,
+                "ref": `refs/heads/${branchName}`,
                 "sha": data.object.sha
               }));
             }
           );
         },
         getBranch: function (branch) {
-          return $github.get(refApi + '/heads/', branch);
+          return $github.get(`${refApi}/heads/${branch}`);
         },
         deleteBranch: function (branch) {
-          console.log('Removing ' + branch);
-          return $github.delete(refApi + '/heads/', branch);
+          console.log(`Removing ${branch}`);
+          return $github.delete(`${refApi}/heads/${branch}`);
         },
         mergeBranch: function (head, base, commit) {
-          console.log('Merging ' + head + ' in ' + base);
-          return $github.post(repoApi + '/merges', {
+          console.log(`Merging ${head} in ${base}`);
+          return $github.post(`${repoApi}/merges`, {
             "base": base,
             "head": head,
             "commit_message": commit
           });
         },
         getPr: function (number) {
-          return $github.get(repoApi + '/pulls', number);
+          return $github.get(`${repoApi}/pulls/${number}`);
         },
         getPrs: function (params) {
-          return $github.get(repoApi + '/pulls', params);
+          return $github.get(`${repoApi}/pulls`, params);
         },
         getIssue: function (number) {
-          return $github.get(repoApi + '/issues', number);
+          return $github.get(`${repoApi}/issues/${number}`);
         },
         updateIssue: function (number, args) {
-          return $github.patch(repoApi + '/issues/' + number, args);
+          return $github.patch(`${repoApi}/issues/${number}`, args);
         },
         getMilestones: function () {
-          return $github.get(repoApi + '/milestones');
+          return $github.get(`${repoApi}/milestones`);
         }
       };
 

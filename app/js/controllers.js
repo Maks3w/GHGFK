@@ -66,7 +66,7 @@ angular.module('GHGFK').
     }
   }]).
   controller('PrList', ['$scope', '$routeParams', 'github.repository', function ($scope, $routeParams, githubRepoFactory) {
-    var repoFullName = $routeParams.organization + '/' + $routeParams.repo;
+    var repoFullName = `${$routeParams.organization}/${$routeParams.repo}`;
     $scope.per_page = $routeParams.per_page;
     $scope.currentPage = $routeParams.page;
     $scope.repoFullName = repoFullName;

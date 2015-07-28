@@ -16,7 +16,6 @@
         .then(
           function () {
             $location.path("/");
-            $scope.$apply();
           }
         )
       ;

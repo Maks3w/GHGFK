@@ -45,7 +45,6 @@
      */
     function setCredentials(gitHubToken, user) {
       $rootScope.user = user;
-      $rootScope.$apply();
       localStorage.githubToken = gitHubToken;
     }
 

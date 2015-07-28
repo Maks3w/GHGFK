@@ -6,13 +6,12 @@
     .controller("AutoLoginController", AutoLoginController)
   ;
 
-  AutoLoginController.$inject = ["$scope", "$location", "AuthenticationService"];
-  function AutoLoginController($scope, $location, AuthenticationService) {
+  AutoLoginController.$inject = ["$location", "AuthenticationService"];
+  function AutoLoginController($location, AuthenticationService) {
     if (AuthenticationService.hasCredentials()) {
       AuthenticationService.login()
         .then(function () {
           $location.path("/");
-          $scope.$apply();
         })
       ;
     } else {

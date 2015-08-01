@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "module": "system",
+    "target": "ES5"
+  },
+  "files": [
+    "app/lib/github/Model/Model.d.ts",
+    "typings/tsd.d.ts"
+  ]
+}

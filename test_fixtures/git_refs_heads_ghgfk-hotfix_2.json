@@ -1,0 +1,9 @@
+{
+  "ref": "refs/heads/ghgfk-hotfix/2",
+  "url": "https://api.github.com/repos/orgFoo/repoBaz/git/refs/heads/ghgfk-hotfix/2",
+  "object": {
+    "type": "commit",
+    "sha": "36878b1ad15f23e19894f877cc5cb94575fd0f06",
+    "url": "https://api.github.com/repos/orgFoo/repoBaz/git/commits/36878b1ad15f23e19894f877cc5cb94575fd0f06"
+  }
+}

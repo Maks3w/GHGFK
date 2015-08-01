@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="GHGFK">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <title>Merge GitHub's PRs with Git Flow style</title>
@@ -43,9 +43,9 @@
     <h2>DON'T USE THIS IN PRODUCTION</h2>
 
     GitHub token is saved in the browser's localStorage
-    <div ng-controller="Alert" class="ng-cloak">
-        <div class="alert alert-{{ alert.type }}" ng-repeat="alert in alerts" role="alert">
-            <button type="button" class="close" ng-click="close($index)" aria-label="Close">
+    <div ng-controller="AlertController as ac" class="ng-cloak">
+        <div class="alert alert-{{ ac.alert.type }}" ng-repeat="alert in ac.alerts" role="alert">
+            <button type="button" class="close" ng-click="ac.close($index)" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
             {{alert.msg}}
@@ -57,14 +57,14 @@
     Please wait while authentication.
 </script>
 <script type="text/ng-template" id="partials/login.html">
-    <form ng-submit="login()" class="form-horizontal form-signin">
+    <form ng-submit="vm.login()" class="form-horizontal form-signin">
         <h2 class="form-signin-heading">Please provide a GitHub token</h2>
 
         <div class="form-group">
             <label class="col-sm-2 control-label" for="githubToken">Token</label>
 
             <div class="controls">
-                <input type="text" ng-model="github_token" id="githubToken" required/>
+                <input type="text" ng-model="vm.github_token" id="githubToken" required/>
             </div>
         </div>
         <div class="control-group">
@@ -78,7 +78,7 @@
     <h1>Select the organization</h1>
     <ul>
         <li class="list-group-item js-list-browser-item clearfix js-navigation-item unread navigation-focus"
-            ng-repeat="organization in organizations | orderBy: 'login'">
+            ng-repeat="organization in vm.organizations | orderBy: 'login'">
             <a href="#/repo/{{organization.login}}">
                 {{organization.login}}
             </a>
@@ -89,7 +89,7 @@
     <h1>Select the repository</h1>
     <ul>
         <li class="list-group-item js-list-browser-item clearfix js-navigation-item unread navigation-focus"
-            ng-repeat="repo in repositories | orderBy: 'full_name'">
+            ng-repeat="repo in vm.repositories | orderBy: 'full_name'">
             <a href="#/repo/{{repo.full_name}}">
                 {{repo.full_name}}
             </a>
@@ -99,29 +99,36 @@
 <script type="text/ng-template" id="partials/prList.html">
     <div class="pager">
         <ul>
-            <li ng-hide="currentPage == 1" class="previous">
-                <a ng-href="#/repo/{{ repoFullName }}/page/{{ currentPage - 1 }}/per_page/{{ per_page }}">« Previous</a>
+            <li ng-hide="vm.currentPage == 1" class="previous">
+                <a ng-href="#/repo/{{ vm.repoFullName }}/page/{{ vm.currentPage - 1 }}/per_page/{{ vm.per_page }}">
+                    « Previous
+                </a>
             </li>
-            <li ng-hide="prs.length != per_page" class="next">
-                <a ng-href="#/repo/{{ repoFullName }}/page/{{ currentPage*1 + 1 }}/per_page/{{ per_page }}">Next »</a>
+            <li ng-hide="vm.prs.length != vm.per_page" class="next">
+                <a ng-href="#/repo/{{ vm.repoFullName }}/page/{{ vm.currentPage*1 + 1 }}/per_page/{{ vm.per_page }}">
+                    Next »
+                </a>
             </li>
         </ul>
     </div>
     <ul id="pull-request" style="width: 680px">
         <li class="list-group-item js-list-browser-item clearfix js-navigation-item unread navigation-focus"
-            ng-repeat="pr in prs">
+            ng-repeat="pr in vm.prs">
             <span class="list-group-item-number">#{{pr.number}}</span>
             <h4 class="list-group-item-name">
                 <span class="type-icon octicon octicon-git-pull-request open" title="Open pull request"></span>
                 <a href="{{pr.html_url}}" class="js-navigation-open" target="_blank">{{pr.title}}</a>
             </h4>
 
-            <div class="list-group-item-summary"><a href="{{pr.html_url}}"><p>{{pr.body}}</p></a></div>
+            <div class="list-group-item-summary">
+                <a href="{{pr.html_url}}"><p>{{pr.body}}</p></a>
+            </div>
 
             <ul class="list-group-item-meta">
                 <li>
-                    <a href="{{pr.user.html_url}}" class="gravatar"><img height="16" ng-src="{{pr.user.avatar_url}}"
-                                                                         width="16"></a>
+                    <a href="{{pr.user.html_url}}" class="gravatar">
+                        <img height="16" ng-src="{{pr.user.avatar_url}}" width="16">
+                    </a>
                     by <a href="{{pr.user.html_url}}">{{pr.user.login}}</a>
                 </li>
             </ul>
@@ -131,24 +138,31 @@
     </ul>
     <div class="pager">
         <ul>
-            <li ng-hide="currentPage == 1" class="previous">
-                <a ng-href="#/repo/{{ repoFullName }}/page/{{ currentPage - 1 }}/per_page/{{ per_page }}">« Previous</a>
+            <li ng-hide="vm.currentPage == 1" class="previous">
+                <a ng-href="#/repo/{{ vm.repoFullName }}/page/{{ vm.currentPage - 1 }}/per_page/{{ vm.per_page }}">
+                    « Previous
+                </a>
             </li>
-            <li ng-hide="prs.length != per_page" class="next">
-                <a ng-href="#/repo/{{ repoFullName }}/page/{{ currentPage*1 + 1 }}/per_page/{{ per_page }}">Next »</a>
+            <li ng-hide="vm.prs.length != vm.per_page" class="next">
+                <a ng-href="#/repo/{{ vm.repoFullName }}/page/{{ vm.currentPage*1 + 1 }}/per_page/{{ vm.per_page }}">
+                    Next »
+                </a>
             </li>
         </ul>
     </div>
 </script>
 
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="../node_modules/typescript/bin/typescript.js"></script>
+<script src="bower_components/system.js/dist/system.src.js"></script>
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-route/angular-route.min.js"></script>
-<script src="lib/github/github.js"></script>
-<script src="lib/github/github-directives.js"></script>
-<script src="js/app.js"></script>
-<script src="js/controllers.js"></script>
-<script src="js/Controller/AutoLoginController.js"></script>
-<script src="js/Controller/LoginController.js"></script>
-<script src="js/Service/AuthenticationService.js"></script>
+<script>
+    System.config({
+        transpiler: "typescript"
+    });
+    System.import("./js/app.ts");
+</script>
 </body>
 </html>

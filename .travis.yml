@@ -12,7 +12,7 @@ cache:
 
 branches:
   only:
-    - gh-pages
+    - /.*/ # all branches an gh-pages too
 
 script:
   - karma start karma.conf.js --no-auto-watch --single-run --reporters=dots --browsers=Firefox

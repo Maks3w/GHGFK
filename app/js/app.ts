@@ -24,32 +24,32 @@ angular.module(moduleName, [GithubModule, GithubDirectives, "ngRoute"])
             redirectTo: "/repo"
         });
         $routeProvider.when("/auto_login", {
-            templateUrl: "partials/autoLogin.html",
+            templateUrl: "js/Controller/AutoLogin.html",
             controller: "AutoLoginController",
             controllerAs: "vm"
         });
         $routeProvider.when("/login", {
-            templateUrl: "partials/login.html",
+            templateUrl: "js/Controller/Login.html",
             controller: "LoginController",
             controllerAs: "vm"
         });
         $routeProvider.when("/repo", {
-            templateUrl: "partials/orgList.html",
+            templateUrl: "js/Controller/Organizations.html",
             controller: "OrganizationsController",
             controllerAs: "vm"
         });
         $routeProvider.when("/repo/:organization", {
-            templateUrl: "partials/repoList.html",
+            templateUrl: "js/Controller/Repositories.html",
             controller: "RepositoriesController",
             controllerAs: "vm"
         });
         $routeProvider.when("/repo/:organization/:repo", {
-            templateUrl: "partials/prList.html",
+            templateUrl: "js/Controller/Prs.html",
             controller: "PrsController",
             controllerAs: "vm"
         });
         $routeProvider.when("/repo/:organization/:repo/page/:page/per_page/:per_page", {
-            templateUrl: "partials/prList.html",
+            templateUrl: "js/Controller/Prs.html",
             controller: "PrsController",
             controllerAs: "vm"
         });

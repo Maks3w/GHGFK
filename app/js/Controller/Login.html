@@ -1,0 +1,16 @@
+<form ng-submit="vm.login()" class="form-horizontal form-signin">
+  <h2 class="form-signin-heading">Please provide a GitHub token</h2>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label" for="githubToken">Token</label>
+
+    <div class="controls">
+      <input type="text" ng-model="vm.github_token" id="githubToken" required/>
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls">
+      <button type="submit" class="btn btn-primary">Login</button>
+    </div>
+  </div>
+</form>

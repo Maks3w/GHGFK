@@ -1,0 +1,9 @@
+<h1>Select the repository</h1>
+<ul>
+  <li class="list-group-item js-list-browser-item clearfix js-navigation-item unread navigation-focus"
+      ng-repeat="repo in vm.repositories | orderBy: 'full_name'">
+    <a href="#/repo/{{repo.full_name}}">
+      {{repo.full_name}}
+    </a>
+  </li>
+</ul>

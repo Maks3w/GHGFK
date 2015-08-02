@@ -1,0 +1,9 @@
+<h1>Select the organization</h1>
+<ul>
+  <li class="list-group-item js-list-browser-item clearfix js-navigation-item unread navigation-focus"
+      ng-repeat="organization in vm.organizations | orderBy: 'login'">
+    <a href="#/repo/{{organization.login}}">
+      {{organization.login}}
+    </a>
+  </li>
+</ul>

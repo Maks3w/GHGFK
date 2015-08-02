@@ -1,0 +1,53 @@
+<div class="pager">
+  <ul>
+    <li ng-hide="vm.currentPage == 1" class="previous">
+      <a ng-href="#/repo/{{ vm.repoFullName }}/page/{{ vm.currentPage - 1 }}/per_page/{{ vm.per_page }}">
+        « Previous
+      </a>
+    </li>
+    <li ng-hide="vm.prs.length != vm.per_page" class="next">
+      <a ng-href="#/repo/{{ vm.repoFullName }}/page/{{ vm.currentPage*1 + 1 }}/per_page/{{ vm.per_page }}">
+        Next »
+      </a>
+    </li>
+  </ul>
+</div>
+<ul id="pull-request" style="width: 680px">
+  <li class="list-group-item js-list-browser-item clearfix js-navigation-item unread navigation-focus"
+      ng-repeat="pr in vm.prs">
+    <span class="list-group-item-number">#{{pr.number}}</span>
+    <h4 class="list-group-item-name">
+      <span class="type-icon octicon octicon-git-pull-request open" title="Open pull request"></span>
+      <a href="{{pr.html_url}}" class="js-navigation-open" target="_blank">{{pr.title}}</a>
+    </h4>
+
+    <div class="list-group-item-summary">
+      <a href="{{pr.html_url}}"><p>{{pr.body}}</p></a>
+    </div>
+
+    <ul class="list-group-item-meta">
+      <li>
+        <a href="{{pr.user.html_url}}" class="gravatar">
+          <img height="16" ng-src="{{pr.user.avatar_url}}" width="16">
+        </a>
+        by <a href="{{pr.user.html_url}}">{{pr.user.login}}</a>
+      </li>
+    </ul>
+
+    <merge-button pr="pr"/>
+  </li>
+</ul>
+<div class="pager">
+  <ul>
+    <li ng-hide="vm.currentPage == 1" class="previous">
+      <a ng-href="#/repo/{{ vm.repoFullName }}/page/{{ vm.currentPage - 1 }}/per_page/{{ vm.per_page }}">
+        « Previous
+      </a>
+    </li>
+    <li ng-hide="vm.prs.length != vm.per_page" class="next">
+      <a ng-href="#/repo/{{ vm.repoFullName }}/page/{{ vm.currentPage*1 + 1 }}/per_page/{{ vm.per_page }}">
+        Next »
+      </a>
+    </li>
+  </ul>
+</div>

@@ -20,7 +20,8 @@ describe("LoggedUserService unit tests", ():void => {
             let promiseThen:jasmine.Spy = jasmine.createSpy("then");
             let user:gh.IUser = readJSON("test_fixtures/user.json");
 
-            httpBackend.expectGET("https://api.github.com/user").respond(user);
+            httpBackend.expectGET("https://api.github.com/user")
+                .respond(user);
             loggedUserService.getUser().then(promiseThen);
 
             httpBackend.flush();

@@ -18,14 +18,19 @@ describe("RepositoryService unit tests", ():void => {
             repositoryFullName
         );
 
-        httpBackend.whenGET("https://api.github.com/repos/orgFoo/repoBaz/milestones").respond([readJSON("test_fixtures/milestones_2.json")]);
-        httpBackend.whenGET("https://api.github.com/repos/orgFoo/repoBaz/issues").respond([readJSON("test_fixtures/issues_2.json")]);
-        httpBackend.whenGET("https://api.github.com/repos/orgFoo/repoBaz/issues/2").respond(readJSON("test_fixtures/issues_2.json"));
+        httpBackend.whenGET("https://api.github.com/repos/orgFoo/repoBaz/milestones")
+            .respond([readJSON("test_fixtures/milestones_2.json")]);
+        httpBackend.whenGET("https://api.github.com/repos/orgFoo/repoBaz/issues")
+            .respond([readJSON("test_fixtures/issues_2.json")]);
+        httpBackend.whenGET("https://api.github.com/repos/orgFoo/repoBaz/issues/2")
+            .respond(readJSON("test_fixtures/issues_2.json"));
         httpBackend.whenPATCH("https://api.github.com/repos/orgFoo/repoBaz/issues/2", {
             "assignee": "userFoo"
         }).respond(readJSON("test_fixtures/issues_2.json"));
-        httpBackend.whenGET("https://api.github.com/repos/orgFoo/repoBaz/pulls").respond([readJSON("test_fixtures/pulls_2.json")]);
-        httpBackend.whenGET("https://api.github.com/repos/orgFoo/repoBaz/pulls/2").respond(readJSON("test_fixtures/pulls_2.json"));
+        httpBackend.whenGET("https://api.github.com/repos/orgFoo/repoBaz/pulls")
+            .respond([readJSON("test_fixtures/pulls_2.json")]);
+        httpBackend.whenGET("https://api.github.com/repos/orgFoo/repoBaz/pulls/2")
+            .respond(readJSON("test_fixtures/pulls_2.json"));
         httpBackend.whenPOST("https://api.github.com/repos/orgFoo/repoBaz/merges", {
             "base": "master",
             "head": "ghgfk-hotfix/2",
@@ -35,9 +40,12 @@ describe("RepositoryService unit tests", ():void => {
             "ref": "refs/heads/ghgfk-hotfix/2",
             "sha": "36878b1ad15f23e19894f877cc5cb94575fd0f06"
         }).respond(readJSON("test_fixtures/git_refs_heads_ghgfk-hotfix_2.json"));
-        httpBackend.whenGET("https://api.github.com/repos/orgFoo/repoBaz/git/refs/heads/master").respond(readJSON("test_fixtures/git_refs_heads_master.json"));
-        httpBackend.whenGET("https://api.github.com/repos/orgFoo/repoBaz/git/refs/heads/ghgfk-hotfix/2").respond(readJSON("test_fixtures/git_refs_heads_ghgfk-hotfix_2.json"));
-        httpBackend.whenDELETE("https://api.github.com/repos/orgFoo/repoBaz/git/refs/heads/ghgfk-hotfix/2").respond(200, "");
+        httpBackend.whenGET("https://api.github.com/repos/orgFoo/repoBaz/git/refs/heads/master")
+            .respond(readJSON("test_fixtures/git_refs_heads_master.json"));
+        httpBackend.whenGET("https://api.github.com/repos/orgFoo/repoBaz/git/refs/heads/ghgfk-hotfix/2")
+            .respond(readJSON("test_fixtures/git_refs_heads_ghgfk-hotfix_2.json"));
+        httpBackend.whenDELETE("https://api.github.com/repos/orgFoo/repoBaz/git/refs/heads/ghgfk-hotfix/2")
+            .respond(200, "");
     }));
 
     describe("getBranch()", ():void => {

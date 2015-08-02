@@ -27,10 +27,12 @@ describe("GitFlowService unit tests", ():void => {
             let pr:gh.IPr = readJSON("test_fixtures/pulls_2.json");
 
             // 1. Verify PR is mergeable
-            httpBackend.expectGET("https://api.github.com/repos/orgFoo/repoBaz/pulls/2").respond(readJSON("test_fixtures/pulls_2.json"));
+            httpBackend.expectGET("https://api.github.com/repos/orgFoo/repoBaz/pulls/2")
+                .respond(readJSON("test_fixtures/pulls_2.json"));
 
             // 2. GitFlow create temporal branch
-            httpBackend.whenGET("https://api.github.com/repos/orgFoo/repoBaz/git/refs/heads/master").respond(readJSON("test_fixtures/git_refs_heads_master.json"));
+            httpBackend.whenGET("https://api.github.com/repos/orgFoo/repoBaz/git/refs/heads/master")
+                .respond(readJSON("test_fixtures/git_refs_heads_master.json"));
             httpBackend.expectPOST("https://api.github.com/repos/orgFoo/repoBaz/git/refs", {
                 "ref": "refs/heads/ghgfk-hotfix/2",
                 "sha": "36878b1ad15f23e19894f877cc5cb94575fd0f06"
@@ -58,16 +60,19 @@ describe("GitFlowService unit tests", ():void => {
             }).respond(readJSON("test_fixtures/merges.json"));
 
             // 6. GitFlow Remove temporal branch
-            httpBackend.expectDELETE("https://api.github.com/repos/orgFoo/repoBaz/git/refs/heads/ghgfk-hotfix/2").respond(200, "");
+            httpBackend.expectDELETE("https://api.github.com/repos/orgFoo/repoBaz/git/refs/heads/ghgfk-hotfix/2")
+                .respond(200, "");
 
             // A. "Lock" issue by assign the current user
-            httpBackend.whenGET("https://api.github.com/user").respond(readJSON("test_fixtures/user.json"));
+            httpBackend.whenGET("https://api.github.com/user")
+                .respond(readJSON("test_fixtures/user.json"));
             httpBackend.whenPATCH("https://api.github.com/repos/orgFoo/repoBaz/issues/2", {
                 "assignee": "userFoo"
             }).respond(readJSON("test_fixtures/issues_2.json"));
 
             // B. Set milestone
-            httpBackend.whenGET("https://api.github.com/repos/orgFoo/repoBaz/milestones").respond([readJSON("test_fixtures/milestones_2.json")]);
+            httpBackend.whenGET("https://api.github.com/repos/orgFoo/repoBaz/milestones")
+                .respond([readJSON("test_fixtures/milestones_2.json")]);
             httpBackend.whenPATCH("https://api.github.com/repos/orgFoo/repoBaz/issues/2", {
                 "milestone": 2
             }).respond(readJSON("test_fixtures/issues_2.json"));
@@ -80,7 +85,8 @@ describe("GitFlowService unit tests", ():void => {
             let pr:gh.IPr = readJSON("test_fixtures/pulls_2.json");
 
             // 1. Verify PR is mergeable
-            httpBackend.expectGET("https://api.github.com/repos/orgFoo/repoBaz/pulls/2").respond(readJSON("test_fixtures/pulls_2.json"));
+            httpBackend.expectGET("https://api.github.com/repos/orgFoo/repoBaz/pulls/2")
+                .respond(readJSON("test_fixtures/pulls_2.json"));
 
             // 2. merge PR in target branch
             httpBackend.expectPOST("https://api.github.com/repos/orgFoo/repoBaz/merges", {
@@ -90,13 +96,15 @@ describe("GitFlowService unit tests", ():void => {
             }).respond(readJSON("test_fixtures/merges.json"));
 
             // A. "Lock" issue by assign the current user
-            httpBackend.whenGET("https://api.github.com/user").respond(readJSON("test_fixtures/user.json"));
+            httpBackend.whenGET("https://api.github.com/user")
+                .respond(readJSON("test_fixtures/user.json"));
             httpBackend.whenPATCH("https://api.github.com/repos/orgFoo/repoBaz/issues/2", {
                 "assignee": "userFoo"
             }).respond(readJSON("test_fixtures/issues_2.json"));
 
             // B. Set milestone
-            httpBackend.whenGET("https://api.github.com/repos/orgFoo/repoBaz/milestones").respond([readJSON("test_fixtures/milestones_2.json")]);
+            httpBackend.whenGET("https://api.github.com/repos/orgFoo/repoBaz/milestones")
+                .respond([readJSON("test_fixtures/milestones_2.json")]);
             httpBackend.whenPATCH("https://api.github.com/repos/orgFoo/repoBaz/issues/2", {
                 "milestone": 2
             }).respond(readJSON("test_fixtures/issues_2.json"));

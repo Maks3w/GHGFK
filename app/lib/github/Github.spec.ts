@@ -30,7 +30,8 @@ describe("Github unit tests", ():void => {
                 "APIResponse": "baz"
             };
 
-            httpBackend.expectGET("https://api.github.com/foo", assertDefaultHeaders).respond(responseData);
+            httpBackend.expectGET("https://api.github.com/foo", assertDefaultHeaders)
+                .respond(responseData);
 
             github.get("/foo").then(promiseThen);
 
@@ -46,7 +47,8 @@ describe("Github unit tests", ():void => {
                 "APIResponse": "baz"
             };
 
-            httpBackend.expectGET("https://api.github.com/foo?paramFoo=valueBaz", assertDefaultHeaders).respond(responseData);
+            httpBackend.expectGET("https://api.github.com/foo?paramFoo=valueBaz", assertDefaultHeaders)
+                .respond(responseData);
 
             github.get("/foo", {
                 "paramFoo": "valueBaz"
@@ -69,7 +71,8 @@ describe("Github unit tests", ():void => {
                 "APIResponse": "baz"
             };
 
-            httpBackend.expectPATCH("https://api.github.com/foo", requestData, assertDefaultHeaders).respond(responseData);
+            httpBackend.expectPATCH("https://api.github.com/foo", requestData, assertDefaultHeaders)
+                .respond(responseData);
 
             github.patch("/foo", requestData).then(promiseThen);
 
@@ -90,7 +93,8 @@ describe("Github unit tests", ():void => {
                 "APIResponse": "baz"
             };
 
-            httpBackend.expectPOST("https://api.github.com/foo", requestData, assertDefaultHeaders).respond(responseData);
+            httpBackend.expectPOST("https://api.github.com/foo", requestData, assertDefaultHeaders)
+                .respond(responseData);
 
             github.post("/foo", requestData).then(promiseThen);
 
@@ -111,7 +115,8 @@ describe("Github unit tests", ():void => {
                 "APIResponse": "baz"
             };
 
-            httpBackend.expectPUT("https://api.github.com/foo", requestData, assertDefaultHeaders).respond(responseData);
+            httpBackend.expectPUT("https://api.github.com/foo", requestData, assertDefaultHeaders)
+                .respond(responseData);
 
             github.put("/foo", requestData).then(promiseThen);
 
@@ -126,7 +131,8 @@ describe("Github unit tests", ():void => {
         it("no body is returned", ():void => {
             let promiseThen:jasmine.Spy = jasmine.createSpy("then");
 
-            httpBackend.expectDELETE("https://api.github.com/foo", assertDefaultHeaders).respond(200, "");
+            httpBackend.expectDELETE("https://api.github.com/foo", assertDefaultHeaders)
+                .respond(200, "");
 
             github.delete("/foo").then(promiseThen);
 

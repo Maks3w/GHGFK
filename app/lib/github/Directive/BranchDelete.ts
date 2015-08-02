@@ -1,7 +1,9 @@
 ///<reference path="../../../../typings/tsd.d.ts"/>
 
+import {RepositoryFactory} from "../RepositoryService.ts";
+
 export class BranchDeleteFactory {
-    static create(repoFactory):BranchDelete {
+    static create(repoFactory:RepositoryFactory):BranchDelete {
         return new BranchDelete(repoFactory);
     }
 }
@@ -10,13 +12,13 @@ export class BranchDelete implements ng.IDirective {
     public restrict:string = "AC";
     public link:ng.IDirectiveLinkFn;
 
-    private repoFactory;
+    private repoFactory:RepositoryFactory;
 
-    constructor(repoFactory) {
+    constructor(repoFactory:RepositoryFactory) {
         this.repoFactory = repoFactory;
         this.link = ($scope:ng.IScope, element:ng.IAugmentedJQuery, attrs:ng.IAttributes):void => {
             element.bind("click", () => {
-                this.repoFactory(attrs.repo).deleteBranch(attrs.name);
+                this.repoFactory.repository(attrs.repo).deleteBranch(attrs.name);
             });
         };
     }

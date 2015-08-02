@@ -2,6 +2,18 @@
 
 import {Github} from "./Github.ts";
 
+export class RepositoryFactory {
+    private github:Github;
+
+    constructor(github:Github) {
+        this.github = github;
+    }
+
+    repository(fullName:string):RepositoryService {
+        return new RepositoryService(this.github, fullName);
+    }
+}
+
 export class RepositoryService {
     private github:Github;
     private repoApi:string;

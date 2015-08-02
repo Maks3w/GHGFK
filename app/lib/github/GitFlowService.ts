@@ -1,15 +1,18 @@
 ///<reference path="../../../typings/tsd.d.ts"/>
 
 import {LoggedUserService} from "./LoggedUserService.ts";
-import {RepositoryService} from "./RepositoryService.ts";
+import {RepositoryFactory, RepositoryService} from "./RepositoryService.ts";
 
 export class GitFlowService {
-    private repoFactory;
+    private repoFactory:RepositoryFactory;
     private $rootScope:ng.IRootScopeService;
     private $q:ng.IQService;
     private githubLoggedUserService:LoggedUserService;
 
-    constructor(repoFactory, githubLoggedUserService:LoggedUserService, $rootScope:ng.IRootScopeService, $q:ng.IQService) {
+    constructor(repoFactory:RepositoryFactory,
+                githubLoggedUserService:LoggedUserService,
+                $rootScope:ng.IRootScopeService,
+                $q:ng.IQService) {
         this.repoFactory = repoFactory;
         this.githubLoggedUserService = githubLoggedUserService;
         this.$rootScope = $rootScope;
@@ -18,7 +21,7 @@ export class GitFlowService {
 
     merge(pr:gh.IPr, commitMsg:string, selectedBranches:string[], temporalBranch:string):ng.IPromise<any> {
         let prOriginalDstBranch:string = pr.base.ref;
-        let repository:RepositoryService = this.repoFactory(pr.base.repo.full_name);
+        let repository:RepositoryService = this.repoFactory.repository(pr.base.repo.full_name);
         return repository.getPr(pr.number)
             .then((currentPr:gh.IPr):ng.IPromise<gh.IUser> => {
                 pr = currentPr;
@@ -82,7 +85,7 @@ export class GitFlowService {
 
     simpleMerge(pr:gh.IPr, commitMsg:string, dstBranch:string):ng.IPromise<any> {
         console.log(`Merging #${pr.number} in ${dstBranch} with commit ${commitMsg}`);
-        let repository:RepositoryService = this.repoFactory(pr.base.repo.full_name);
+        let repository:RepositoryService = this.repoFactory.repository(pr.base.repo.full_name);
         return repository.mergeBranch(pr.head.sha, dstBranch, commitMsg)
             .then(() => {
                 console.log(`#${pr.number} merged`);
@@ -92,7 +95,7 @@ export class GitFlowService {
 
     gitFlowMerge(pr:gh.IPr, temporalBranch:string, commitMsg:string, master:string, develop:string):ng.IPromise<any> {
         console.log(`Merging ${temporalBranch} in ${[master, develop]} with commit ${commitMsg}`);
-        let repository:RepositoryService = this.repoFactory(pr.base.repo.full_name);
+        let repository:RepositoryService = this.repoFactory.repository(pr.base.repo.full_name);
         return repository.createBranch(temporalBranch, master)
             .then(() => {
                 console.log(`Merging #${pr.number} in ${temporalBranch}`);

@@ -1,14 +1,16 @@
 ///<reference path="../../../typings/tsd.d.ts"/>
 
+import {RepositoryFactory} from "../../lib/github/RepositoryService.ts";
+
 export class PrsController {
     public per_page:number;
     public currentPage:number;
     public repoFullName:string;
     public prs:gh.IPr[] = [];
 
-    private githubRepoFactory;
+    private githubRepoFactory:RepositoryFactory;
 
-    constructor($routeParams:angular.route.IRouteParamsService, githubRepoFactory) {
+    constructor($routeParams:angular.route.IRouteParamsService, githubRepoFactory:RepositoryFactory) {
         this.githubRepoFactory = githubRepoFactory;
         this.per_page = $routeParams.per_page;
         this.currentPage = $routeParams.page;
@@ -22,9 +24,11 @@ export class PrsController {
             per_page: per_page
         };
 
-        return this.githubRepoFactory(repoFullName).getPrs(params)
-            .then((prs:gh.IPr[]):void => {
+        return this.githubRepoFactory.repository(repoFullName).getPrs(params)
+            .then((prs:gh.IPr[]):gh.IPr[] => {
                 this.prs = prs;
+
+                return prs;
             })
             ;
     };

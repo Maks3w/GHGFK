@@ -2,18 +2,19 @@
 
 import {AuthenticationService} from "../Service/AuthenticationService.ts";
 import {LoggedUserService} from "../../lib/github/LoggedUserService.ts";
+import {OrganizationFactory} from "../../lib/github/OrganizationService.ts";
 
 export class RepositoriesController {
     public repositories:gh.IRepository[] = [];
 
     private githubLoggedUserService:LoggedUserService;
-    private githubOrganizationFactory;
+    private githubOrganizationFactory:OrganizationFactory;
     private AuthenticationService:AuthenticationService;
 
     constructor(AuthenticationService:AuthenticationService,
                 $routeParams:angular.route.IRouteParamsService,
                 githubLoggedUserService:LoggedUserService,
-                githubOrganizationFactory) {
+                githubOrganizationFactory:OrganizationFactory) {
         this.AuthenticationService = AuthenticationService;
         this.githubLoggedUserService = githubLoggedUserService;
         this.githubOrganizationFactory = githubOrganizationFactory;
@@ -48,7 +49,7 @@ export class RepositoriesController {
                     type: "member"
                 }
             );
-            promise = this.githubOrganizationFactory(organization).getRepositories(listParams);
+            promise = this.githubOrganizationFactory.organization(organization).getRepositories(listParams);
         }
 
         return promise;

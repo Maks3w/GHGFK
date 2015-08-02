@@ -14,5 +14,9 @@ branches:
   only:
     - /.*/ # all branches an gh-pages too
 
+install:
+  - npm install -g grunt-cli
+
 script:
+  - grunt tslint
   - karma start karma.conf.js --no-auto-watch --single-run --reporters=dots --browsers=Firefox

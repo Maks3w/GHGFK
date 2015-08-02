@@ -12,10 +12,10 @@ export class PrsController {
 
     constructor($routeParams:angular.route.IRouteParamsService, githubRepoFactory:RepositoryFactory) {
         this.githubRepoFactory = githubRepoFactory;
-        this.per_page = $routeParams.per_page;
-        this.currentPage = $routeParams.page;
+        this.per_page = $routeParams.per_page || 100;
+        this.currentPage = $routeParams.page || 1;
         this.repoFullName = `${$routeParams.organization}/${$routeParams.repo}`;
-        this.fetchPrs(this.repoFullName, $routeParams.page, $routeParams.per_page);
+        this.fetchPrs(this.repoFullName, this.currentPage, this.per_page);
     }
 
     fetchPrs(repoFullName:string, page:number, per_page:number):ng.IPromise<gh.IPr[]> {

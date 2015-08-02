@@ -48,11 +48,6 @@ angular.module(moduleName, [GithubModule, GithubDirectives, "ngRoute"])
             controller: "PrsController",
             controllerAs: "vm"
         });
-        $routeProvider.when("/repo/:organization/:repo/page/:page/per_page/:per_page", {
-            templateUrl: "js/Controller/Prs.html",
-            controller: "PrsController",
-            controllerAs: "vm"
-        });
         $routeProvider.otherwise({redirectTo: "/"});
     }])
     .run(["$rootScope", "AuthenticationService", "$location",

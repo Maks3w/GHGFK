@@ -1,12 +1,12 @@
 <div class="pager">
   <ul>
     <li ng-hide="vm.currentPage == 1" class="previous">
-      <a ng-href="#/repo/{{ vm.repoFullName }}/page/{{ vm.currentPage - 1 }}/per_page/{{ vm.per_page }}">
+      <a ng-href="#/repo/{{ vm.repoFullName }}?page={{ vm.currentPage - 1 }}&per_page={{ vm.per_page }}">
         « Previous
       </a>
     </li>
     <li ng-hide="vm.prs.length != vm.per_page" class="next">
-      <a ng-href="#/repo/{{ vm.repoFullName }}/page/{{ vm.currentPage*1 + 1 }}/per_page/{{ vm.per_page }}">
+      <a ng-href="#/repo/{{ vm.repoFullName }}?page={{ vm.currentPage*1 + 1 }}&per_page={{ vm.per_page }}">
         Next »
       </a>
     </li>
@@ -40,12 +40,12 @@
 <div class="pager">
   <ul>
     <li ng-hide="vm.currentPage == 1" class="previous">
-      <a ng-href="#/repo/{{ vm.repoFullName }}/page/{{ vm.currentPage - 1 }}/per_page/{{ vm.per_page }}">
+      <a ng-href="#/repo/{{ vm.repoFullName }}?page={{ vm.currentPage - 1 }}&per_page={{ vm.per_page }}">
         « Previous
       </a>
     </li>
     <li ng-hide="vm.prs.length != vm.per_page" class="next">
-      <a ng-href="#/repo/{{ vm.repoFullName }}/page/{{ vm.currentPage*1 + 1 }}/per_page/{{ vm.per_page }}">
+      <a ng-href="#/repo/{{ vm.repoFullName }}?page={{ vm.currentPage*1 + 1 }}&per_page={{ vm.per_page }}">
         Next »
       </a>
     </li>

@@ -14,6 +14,10 @@ branches:
   only:
     - /.*/ # all branches an gh-pages too
 
+before_install:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+
 install:
   - npm install
   - npm install -g grunt-cli

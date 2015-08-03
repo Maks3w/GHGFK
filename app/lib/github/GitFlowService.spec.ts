@@ -4,22 +4,21 @@ import {ConfiguratorProvider} from "./ConfiguratorProvider.ts";
 import {GitFlowService} from "./GitFlowService.ts";
 import {Github} from "./Github.ts";
 import {LoggedUserService} from "./LoggedUserService.ts";
-import {RepositoryService} from "./RepositoryService.ts";
+import {RepositoryFactory} from "./RepositoryService.ts";
 import {readJSON} from "node_modules/karma-read-json/karma-read-json.js";
 
 describe("GitFlowService unit tests", ():void => {
     let gitFlowService:GitFlowService;
     let httpBackend:ng.IHttpBackendService;
-    let repositoryFullName:string = "orgFoo/repoBaz";
 
     beforeEach(inject(($httpBackend:ng.IHttpBackendService, $http:ng.IHttpService, $rootScope:ng.IRootScopeService, $q:ng.IQService) => {
         httpBackend = $httpBackend;
 
         let github:Github = new Github(new ConfiguratorProvider(), $http);
-        let repositoryService:RepositoryService = new RepositoryService(github, repositoryFullName);
+        let repositoryFactory:RepositoryFactory = new RepositoryFactory(github);
         let githubLoggedUserService:LoggedUserService = new LoggedUserService(github);
 
-        gitFlowService = new GitFlowService(() => { return repositoryService; }, githubLoggedUserService, $rootScope, $q);
+        gitFlowService = new GitFlowService(repositoryFactory, githubLoggedUserService, $rootScope, $q);
     }));
 
     describe("merge()", ():void => {

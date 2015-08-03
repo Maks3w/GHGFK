@@ -22,6 +22,7 @@
   "devDependencies": {
     "angular-mocks": "^1.4",
     "bower": "^1.4.1",
+    "es6-module-loader": "^0.17.3",
     "grunt": "^0.4",
     "grunt-contrib-watch": "^0.6",
     "grunt-notify": "^0.4",
@@ -36,6 +37,7 @@
     "karma-systemjs": "^0.7",
     "load-grunt-tasks": "^3.2",
     "protractor": "^2.1",
+    "systemjs": "^0.18.4",
     "time-grunt": "^1.2",
     "tsd": "^0.6",
     "tslint": "^2.4"

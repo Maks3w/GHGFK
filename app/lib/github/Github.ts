@@ -1,5 +1,3 @@
-///<reference path="../../../typings/tsd.d.ts"/>
-
 import {ConfiguratorProvider} from "./ConfiguratorProvider";
 
 export class Github {

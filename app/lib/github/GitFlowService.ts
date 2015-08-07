@@ -1,5 +1,3 @@
-///<reference path="../../../typings/tsd.d.ts"/>
-
 import {LoggedUserService} from "./LoggedUserService.ts";
 import {RepositoryFactory, RepositoryService} from "./RepositoryService.ts";
 

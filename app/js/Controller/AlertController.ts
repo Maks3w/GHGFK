@@ -1,5 +1,3 @@
-///<reference path="../../../typings/tsd.d.ts"/>
-
 export class AlertController {
     public alerts:{type:string, msg:string}[] = [];
 

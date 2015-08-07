@@ -1,5 +1,3 @@
-///<reference path="../../../typings/tsd.d.ts"/>
-
 import {Github} from "./Github.ts";
 
 export class LoggedUserService {

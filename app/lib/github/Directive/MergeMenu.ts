@@ -1,5 +1,3 @@
-///<reference path="../../../../typings/tsd.d.ts"/>
-
 export class MergeMenuFactory {
     static create():MergeMenu {
         return new MergeMenu();

@@ -1,5 +1,3 @@
-///<reference path="../../../../typings/tsd.d.ts"/>
-
 export class BranchCreateMenuFactory {
     static create():BranchCreateMenu {
         return new BranchCreateMenu();

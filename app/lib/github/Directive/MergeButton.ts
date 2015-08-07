@@ -1,5 +1,3 @@
-///<reference path="../../../../typings/tsd.d.ts"/>
-
 import {GitFlowService} from "../GitFlowService";
 
 export class MergeButtonFactory {

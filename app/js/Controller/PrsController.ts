@@ -1,5 +1,3 @@
-///<reference path="../../../typings/tsd.d.ts"/>
-
 import {RepositoryFactory} from "../../lib/github/RepositoryService.ts";
 
 export class PrsController {

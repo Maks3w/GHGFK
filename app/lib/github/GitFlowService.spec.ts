@@ -1,5 +1,3 @@
-///<reference path="../../../typings/tsd.d.ts"/>
-
 import {ConfiguratorProvider} from "./ConfiguratorProvider.ts";
 import {GitFlowService} from "./GitFlowService.ts";
 import {Github} from "./Github.ts";

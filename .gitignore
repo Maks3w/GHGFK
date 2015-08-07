@@ -5,4 +5,3 @@ node_modules/typescript/*
 node_modules/typescript/bin/*
 !node_modules/typescript/bin/typescript.js
 typings/*
-!typings/tsd.d.ts

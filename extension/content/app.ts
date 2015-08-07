@@ -1,5 +1,6 @@
 import {default as GithubModule }  from "../../app/lib/github/module.ts";
 import {default as GithubDirectives }  from "../../app/lib/github/Directive/module.ts";
+import {ConfiguratorProvider} from "../../app/lib/github/ConfiguratorProvider";
 import {RepositoryFactory} from "../../app/lib/github/RepositoryService.ts";
 
 let angularBaseElement = document.getElementsByClassName("js-pull-merging").item(0);
@@ -13,25 +14,25 @@ if (angularBaseElement && insertPointElement) {
 
     let moduleName:string = "ghgfk.extension";
     angular.module(moduleName, [GithubModule, GithubDirectives]);
-    let $injector = angular.bootstrap(angularBaseElement, [moduleName]);
+    let $injector:ng.auto.IInjectorService = angular.bootstrap(angularBaseElement, [moduleName]);
 
-    chrome.storage.sync.get("githubToken", function (options:{githubToken:string}) {
+    chrome.storage.sync.get("githubToken", function (options:{githubToken:string}):void {
         console.log("GHGFK: Retrieving GitHub token");
 
-        $injector.invoke(["githubConfigurator", function ($githubConfigurator) {
+        $injector.invoke(["githubConfigurator", function ($githubConfigurator:ConfiguratorProvider):void {
             console.log("GHGFK: Setting GitHub token");
             $githubConfigurator.token = options.githubToken;
         }]);
 
         $injector.invoke(["github.repository", "$compile",
-            function (repoFactory:RepositoryFactory, $compile:ng.ICompileService) {
-                let routeParams = new RegExp(/^\/(.*)\/pull\/(\d+)/).exec(location.pathname);
-                let repoFullName = routeParams[1];
-                let prNumber = routeParams[2];
+            function (repoFactory:RepositoryFactory, $compile:ng.ICompileService):void {
+                let routeParams:[any] = new RegExp(/^\/(.*)\/pull\/(\d+)/).exec(location.pathname);
+                let repoFullName:string = routeParams[1];
+                let prNumber:number = routeParams[2];
 
                 console.log(`GHGFK: Pull request #${prNumber}`);
-                repoFactory.repository(repoFullName).getPr(prNumber).then(function (pr) {
-                    let $scope = insertPointElement.scope();
+                repoFactory.repository(repoFullName).getPr(prNumber).then(function (pr:gh.IPr):void {
+                    let $scope:ng.IScope = insertPointElement.scope();
                     $scope.pr = pr;
 
                     insertPointElement.html($compile('<merge-button pr="pr" />')($scope));

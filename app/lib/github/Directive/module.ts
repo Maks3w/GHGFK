@@ -6,13 +6,9 @@ import {MergeButton, MergeButtonFactory} from "./MergeButton.ts";
 import {MergeMenu, MergeMenuFactory} from "./MergeMenu.ts";
 import {default as GithubModule} from "../module.ts";
 
-BranchCreate.$inject = ["github.repository"];
 BranchCreateFactory.create.$inject = ["github.repository"];
-BranchDelete.$inject = ["github.repository"];
 BranchDeleteFactory.create.$inject = ["github.repository"];
-MergeBranch.$inject = ["github.repository"];
 MergeBranchFactory.create.$inject = ["github.repository"];
-MergeButton.$inject = ["github.git-flow"];
 MergeButtonFactory.create.$inject = ["github.git-flow"];
 
 let moduleName:string = "maks3w.github.directives";

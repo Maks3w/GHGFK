@@ -1,12 +1,12 @@
 import {RepositoryFactory} from "../RepositoryService.ts";
 
-export class BranchCreateFactory {
-    static create(repoFactory:RepositoryFactory):BranchCreate {
-        return new BranchCreate(repoFactory);
+export class Factory {
+    static create(repoFactory:RepositoryFactory):Directive {
+        return new Directive(repoFactory);
     }
 }
 
-export class BranchCreate implements ng.IDirective {
+export class Directive implements ng.IDirective {
     public restrict:string = "AC";
     public link:ng.IDirectiveLinkFn;
 

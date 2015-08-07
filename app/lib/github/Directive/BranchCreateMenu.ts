@@ -1,10 +1,10 @@
-export class BranchCreateMenuFactory {
-    static create():BranchCreateMenu {
-        return new BranchCreateMenu();
+export class Factory {
+    static create():Directive {
+        return new Directive();
     }
 }
 
-export class BranchCreateMenu implements ng.IDirective {
+export class Directive implements ng.IDirective {
     public replace:boolean = true;
     public restrict:string = "E";
     public scope:{} = {

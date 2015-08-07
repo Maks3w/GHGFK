@@ -1,12 +1,15 @@
 import {GitFlowService} from "../GitFlowService";
 
-export class MergeButtonFactory {
-    static create(gitFlow:GitFlowService):MergeButton {
-        return new MergeButton(gitFlow);
+export class Factory {
+    static create():Directive {
+        return new Directive();
     }
 }
 
-export class MergeButton implements ng.IDirective {
+export class Directive implements ng.IDirective {
+    public bindToController:boolean = true;
+    public controllerAs:string = "vm";
+    public controller:any = Controller;
     public restrict:string = "E";
     public scope:{} = {
         pr: "=",
@@ -17,10 +20,11 @@ export class MergeButton implements ng.IDirective {
     };
     public template:string = `
         <div>
-          <form ng-model="pr" ng-submit="merge()" name="mergeFrm" novalidate ng-init="isCollapsed = true">
+          <form ng-model="vm.pr" ng-submit="vm.merge(vm.pr, vm.commitMsg, vm.selectedBranches, vm.temporalBranch)" name="mergeFrm"
+           novalidate ng-init="isCollapsed = true">
             <label>
               Patch type
-              <select ng-model="patchType" required>
+              <select ng-model="vm.patchType" required>
                 <option value="">Select patch type</option>
                 <option value="hotfix">Hotfix</option>
                 <option value="feature">Feature</option>
@@ -28,12 +32,12 @@ export class MergeButton implements ng.IDirective {
             </label>
             <label>
               Commit msg
-              <input type="text" ng-model="commitMsg" ng-bind-template="Merge PR #{{pr.number}}" required/>
+              <input type="text" ng-model="vm.commitMsg" ng-bind-template="Merge PR #{{vm.pr.number}}" required/>
             </label>
             <div class="control-group">
-              <label ng-repeat="(branch, merge) in branches" class="checkbox inline">
-                <input type="checkbox" value="{{ branch }}" ng-model="branches[branch]" ng-checked="merge"
-                 ng-change="filterSelectedBranches()" />
+              <label ng-repeat="(branch, merge) in vm.branches" class="checkbox inline">
+                <input type="checkbox" value="{{ branch }}" ng-model="vm.branches[branch]" ng-checked="merge"
+                 ng-change="vm.filterSelectedBranches()" />
                 {{ branch }}
               </label>
             </div>
@@ -48,72 +52,76 @@ export class MergeButton implements ng.IDirective {
           </form>
           <div ng-hide="isCollapsed">
             <!-- create branch buttons -->
-            <gh-branch-create-menu bases="selectedBranches" name="temporalBranch" repo="pr.base.repo.full_name">
+            <gh-branch-create-menu bases="vm.selectedBranches" name="vm.temporalBranch" repo="vm.pr.base.repo.full_name">
             </gh-branch-create-menu>
             <!-- merge PR in local branch button -->
-            <button class="btn btn-warning gh-merge" repo="{{pr.base.repo.full_name}}" base="{{temporalBranch}}"
-             head="{{pr.originalElement.head.sha}}" msg="{{ commitMsg }}"
-             title="Merge PR #{{ pr.number }} in {{ temporalBranch }} with message {{ commitMsg }}">
+            <button class="btn btn-warning gh-merge" repo="{{vm.pr.base.repo.full_name}}" base="{{vm.temporalBranch}}"
+             head="{{vm.pr.originalElement.head.sha}}" msg="{{ vm.commitMsg }}"
+             title="Merge PR #{{ vm.pr.number }} in {{ vm.temporalBranch }} with message {{ vm.commitMsg }}">
               <span class="type-icon octicon octicon-git-merge"></span>
-              #{{ pr.number }} in {{ temporalBranch }}
+              #{{ vm.pr.number }} in {{ vm.temporalBranch }}
             </button>
-            <a class="btn" href="{{ pr.base.repo.html_url }}/tree/{{ temporalBranch  }}" target="_blank">
+            <a class="btn" href="{{ vm.pr.base.repo.html_url }}/tree/{{ vm.temporalBranch  }}" target="_blank">
               Browse files and edit
             </a>
             <!-- Merge PR in final branches button -->
-            <gh-merge-menu bases="selectedBranches" head="temporalBranch" repo="pr.base.repo.full_name" msg="commitMsg">
+            <gh-merge-menu bases="vm.selectedBranches" head="vm.temporalBranch" repo="vm.pr.base.repo.full_name" msg="commitMsg">
             </gh-merge-menu>
             <!-- delete local branch button -->
-            <button class="btn btn-danger gh-branch-delete" repo="{{pr.base.repo.full_name}}" name="{{temporalBranch}}"
-             title="Delete {{ temporalBranch }}">
+            <button class="btn btn-danger gh-branch-delete" repo="{{vm.pr.base.repo.full_name}}" name="{{vm.temporalBranch}}"
+             title="Delete {{ vm.temporalBranch }}">
               <span class="type-icon octicon octicon-git-branch-delete"></span>
-              {{ temporalBranch }}
+              {{ vm.temporalBranch }}
             </button>
           </div>
         </div>
     `;
     public replace:boolean = true;
+}
+
+export class Controller {
+    public branches:{master:boolean, develop:boolean} = {
+        "master": false,
+        "develop": false
+    };
+    public commitMsg:string;
+    public patchType:string;
+    public pr:gh.IPr; // Angular automatically bind the value of this property
+    public selectedBranches:string[] = [];
+    public temporalBranch:string;
 
     private gitFlow:GitFlowService;
 
-    constructor(gitFlow:GitFlowService) {
+    constructor(gitFlow:GitFlowService, $scope:ng.IScope) {
         this.gitFlow = gitFlow;
-    }
+        this.commitMsg = `Merge pull request #${this.pr.number}`;
 
-    controller($scope:ng.IScope):void {
-        let pr:gh.IPr = $scope.pr;
-        let prOriginalDstBranch:string = pr.base.ref;
-
-        $scope.commitMsg = `Merge pull request #${pr.number}`;
-        $scope.branches = {
-            "master": false,
-            "develop": false
-        };
-        $scope.branches[prOriginalDstBranch] = true;
+        let prOriginalDstBranch:string = this.pr.base.ref;
+        this.branches[prOriginalDstBranch] = true;
         if (prOriginalDstBranch === "master") {
-            $scope.patchType = "hotfix";
-            $scope.branches.develop = true;
+            this.patchType = "hotfix";
+            this.branches.develop = true;
         } else if (prOriginalDstBranch === "develop") {
-            $scope.patchType = "feature";
+            this.patchType = "feature";
         }
 
         $scope.$watch("patchType", ():void => {
-            $scope.temporalBranch = `ghgfk-${$scope.patchType}/${pr.number}`;
+            this.temporalBranch = `ghgfk-${this.patchType}/${this.pr.number}`;
         });
 
-        $scope.filterSelectedBranches = ():void => {
-            let branches:string[] = [];
-            for (let branch in $scope.branches) {
-                if ($scope.branches.hasOwnProperty(branch) && $scope.branches[branch]) {
-                    branches.push(branch);
-                }
-            }
-            $scope.selectedBranches = branches;
-        };
-        $scope.filterSelectedBranches();
+        this.filterSelectedBranches();
+    }
 
-        $scope.merge = ():void => {
-            this.gitFlow.merge($scope.pr, $scope.commitMsg, $scope.selectedBranches, $scope.temporalBranch);
-        };
+    filterSelectedBranches():void {
+        this.selectedBranches = [];
+        for (let branch in this.branches) {
+            if (this.branches.hasOwnProperty(branch) && this.branches[branch]) {
+                this.selectedBranches.push(branch);
+            }
+        }
+    }
+
+    merge(pr:gh.IPr, commitMsg:string, selectedBranches:string[], temporalBranch:string):void {
+        this.gitFlow.merge(pr, commitMsg, selectedBranches, temporalBranch);
     }
 }

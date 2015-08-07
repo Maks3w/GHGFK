@@ -1,25 +1,25 @@
-import {BranchCreate, BranchCreateFactory} from "./BranchCreate.ts";
-import {BranchDelete, BranchDeleteFactory} from "./BranchDelete.ts";
-import {BranchCreateMenu, BranchCreateMenuFactory} from "./BranchCreateMenu.ts";
-import {MergeBranch, MergeBranchFactory} from "./MergeBranch.ts";
-import {MergeButton, MergeButtonFactory} from "./MergeButton.ts";
-import {MergeMenu, MergeMenuFactory} from "./MergeMenu.ts";
+import * as BranchCreate from "./BranchCreate.ts";
+import * as BranchDelete from "./BranchDelete.ts";
+import * as BranchCreateMenu from "./BranchCreateMenu.ts";
+import * as MergeBranch from "./MergeBranch.ts";
+import * as MergeButton from "./MergeButton.ts";
+import * as MergeMenu from "./MergeMenu.ts";
 import {default as GithubModule} from "../module.ts";
 
-BranchCreateFactory.create.$inject = ["github.repository"];
-BranchDeleteFactory.create.$inject = ["github.repository"];
-MergeBranchFactory.create.$inject = ["github.repository"];
-MergeButtonFactory.create.$inject = ["github.git-flow"];
+BranchCreate.Factory.create.$inject = ["github.repository"];
+BranchDelete.Factory.create.$inject = ["github.repository"];
+MergeBranch.Factory.create.$inject = ["github.repository"];
+MergeButton.Controller.$inject = ["github.git-flow", "$scope"];
 
 let moduleName:string = "maks3w.github.directives";
 
 angular.module(moduleName, [GithubModule])
-    .directive("ghBranchCreate", BranchCreateFactory.create)
-    .directive("ghBranchCreateMenu", BranchCreateMenuFactory.create)
-    .directive("ghBranchDelete", BranchDeleteFactory.create)
-    .directive("ghMerge", MergeBranchFactory.create)
-    .directive("ghMergeMenu", MergeMenuFactory.create)
-    .directive("mergeButton", MergeButtonFactory.create)
+    .directive("ghBranchCreate", BranchCreate.Factory.create)
+    .directive("ghBranchCreateMenu", BranchCreateMenu.Factory.create)
+    .directive("ghBranchDelete", BranchDelete.Factory.create)
+    .directive("ghMerge", MergeBranch.Factory.create)
+    .directive("ghMergeMenu", MergeMenu.Factory.create)
+    .directive("mergeButton", MergeButton.Factory.create)
 ;
 
 export {

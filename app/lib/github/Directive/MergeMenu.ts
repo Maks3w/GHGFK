@@ -1,10 +1,10 @@
-export class MergeMenuFactory {
-    static create():MergeMenu {
-        return new MergeMenu();
+export class Factory {
+    static create():Directive {
+        return new Directive();
     }
 }
 
-export class MergeMenu implements ng.IDirective {
+export class Directive implements ng.IDirective {
     public replace:boolean = true;
     public restrict:string = "E";
     public scope:{} = {

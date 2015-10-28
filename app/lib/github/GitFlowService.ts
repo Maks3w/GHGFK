@@ -49,6 +49,7 @@ export class GitFlowService {
                     this.gitFlowMerge(pr, temporalBranch, commitMsg, "master", "develop");
                 }
 
+                /*
                 repository.getMilestones()
                     .then((milestones:gh.IMilestone[]) => {
                         if (milestones.length === 0) {
@@ -75,6 +76,7 @@ export class GitFlowService {
                             "milestone": milestoneNumber
                         });
                     });
+                */
             })
             .catch((reason:string):void => {
                 this.$rootScope.$broadcast("alert.new", "err", reason);

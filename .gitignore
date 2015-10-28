@@ -1,7 +1,7 @@
 node_modules/*
 !node_modules/typescript/
 node_modules/typescript/*
-!node_modules/typescript/bin
-node_modules/typescript/bin/*
-!node_modules/typescript/bin/typescript.js
+!node_modules/typescript/lib
+node_modules/typescript/lib/*
+!node_modules/typescript/lib/typescript.js
 typings/*

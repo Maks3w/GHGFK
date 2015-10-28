@@ -12,7 +12,7 @@ module.exports = function (config) {
       config: {
         paths: {
           systemjs: "app/bower_components/system.js/dist/system.src.js",
-          typescript: "node_modules/typescript/bin/typescript.js"
+          typescript: "node_modules/typescript/lib/typescript.js"
         },
         transpiler: "typescript"
       },

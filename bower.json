@@ -8,6 +8,6 @@
     "angular": "~1.4",
     "angular-route": "~1.4",
     "bootstrap": "~3.3.4",
-    "system.js": "~0.18.4"
+    "system.js": "~0.19.5"
   }
 }

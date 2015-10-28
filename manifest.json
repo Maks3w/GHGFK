@@ -13,7 +13,7 @@
       "js": [
         "app/bower_components/jquery/dist/jquery.js",
         "app/bower_components/bootstrap/dist/js/bootstrap.js",
-        "node_modules/typescript/bin/typescript.js",
+        "node_modules/typescript/lib/typescript.js",
         "app/bower_components/system.js/dist/system.src.js",
         "app/bower_components/angular/angular.js",
         "extension/content/inject.js"
